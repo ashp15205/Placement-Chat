@@ -2,7 +2,6 @@
 
 > A student-first knowledge network for structured, high-quality placement and internship interview experiences.
 
----
 
 ## 📌 Problem
 
@@ -22,7 +21,6 @@ Students often prepare for internships and placements using scattered, low-quali
 3. **Intelligence Feed**: Community-driven discovery with advanced filtering, saving, and liking.
 4. **Moderation Flow**: Protected backend with Supabase RLS and internal admin dashboard.
 
----
 
 ## ✨ Features
 
@@ -34,7 +32,6 @@ Students often prepare for internships and placements using scattered, low-quali
 - 🔍 **Feed & Interactions**: Like, save, and search high-value peer intelligence.
 - 🚦 **Smart Navigation**: Sleek top-bar loaders for seamless internal route transitions.
 
----
 
 ## 🛠 Tech Stack
 
@@ -46,18 +43,15 @@ Students often prepare for internships and placements using scattered, low-quali
 - **Canvas API** – Cursor trail rendering  
 - **Lucide React** – Icons  
 
----
 
 ## 📄 License
 
 This project is licensed under the **MIT License**.
 
----
 
 ## ⭐ Support
 
 If you like this project, consider giving it a ⭐!
 
----
 
 *“Decode the Interview. Own the Offer.”*
