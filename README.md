@@ -1,55 +1,63 @@
-<<<<<<< HEAD
-# PlacementChat
+# 🚀 PlacementChat
 
-![PlacementChat Social Preview](/public/og-image.png)
+> A student-first knowledge network for structured, high-quality placement and internship interview experiences.
 
-## Problem
+---
+
+## 📌 Problem
 
 Students often prepare for internships and placements using scattered, low-quality content:
 
-- Interview experiences are spread across chats, social media threads, and random docs.
-- Information is unstructured, hard to filter, and quickly becomes noisy.
-- Trust is low because anonymous posts and spam are common.
-- Useful data for preparation (round-wise difficulty, topics, prep tips) is often missing.
+- ❌ **Noise**: Interview experiences are spread across chats, social threads, and random docs.
+- ❌ **Unstructured**: Information is hard to filter and quickly becomes chaotic.
+- ❌ **Trust Gap**: Low verification leads to anonymous posts and spam.
+- ❌ **Missing Depth**: Data for preparation (round difficulty, prep tips) is often missing.
 
-## Core Idea
+## 💡 Solution
 
-Build a student-first knowledge network where verified users can publish structured interview experiences and others can discover, save, and learn from them quickly.
+**PlacementChat** delivers a focused, structured workflow to decode the interview:
 
-## Solution
+1. **Auth & Onboarding**: Seamless flow for verified student profiles and academic data.
+2. **Structured Publishing**: Standardized logs for company, role, rounds, topics, and prep strategy.
+3. **Intelligence Feed**: Community-driven discovery with advanced filtering, saving, and liking.
+4. **Moderation Flow**: Protected backend with Supabase RLS and internal admin dashboard.
 
-PlacementChat delivers a focused workflow:
+---
 
-1. Users sign in and complete onboarding with academic profile details.
-2. They publish structured experiences with company, role, route, rounds, topics, and prep strategy.
-3. Community members browse/search the feed, open detailed experience pages, and save/like useful posts.
-4. Inappropriate content can be reported.
-5. Admins review moderation reports and update report status from an internal dashboard.
+## ✨ Features
 
-The backend is protected with Supabase RLS, DB-level constraints, and anti-abuse write limits.
+- 🎬 **Cinematic Entry Sequence**: High-fidelity 'Blueprint Intelligence' global loader with official brand path animation.
+- 🎯 **Interactive UX**: Premium 'Electric Ice' neon cursor trails with fluid momentum and ribbon-like tapering.
+- 🎨 **Minimalist Design**: Strictly monochromatic, high-contrast Apple-style UI architecture.
+- 🔐 **Auth & Onboarding**: Effortless verification and academic personalization.
+- 🧠 **Structured Discovery**: Highly detailed interview logs with round-wise insights.
+- 🔍 **Feed & Interactions**: Like, save, and search high-value peer intelligence.
+- 🚦 **Smart Navigation**: Sleek top-bar loaders for seamless internal route transitions.
 
-## Features
+---
 
-- **Cinematic Entry Sequence**: High-fidelity 'Blueprint Intelligence' global loader with official brand path animation.
-- **Interactive UX**: Premium 'Electric Ice' neon cursor trails with fluid momentum and ribbon-like tapering.
-- **Minimalist Design**: Strictly monochromatic, high-contrast Apple-style UI architecture.
-- **Auth & Onboarding**: Seamless flow for student profile verification and data personalization.
-- **Structured Publishing**: Highly detailed interview logs with round-wise difficulty, topics, and prep strategy.
-- **Feed & Interactions**: Peer-to-peer intelligence sharing with liking, saving, and search capabilities.
-- **Strategic Navigation**: Sleek, non-intrusive top-bar loaders for all internal route transitions.
+## 🛠 Tech Stack
 
-## Tech Stack
+- **Next.js 16** – App Router + Server Actions  
+- **React 19** – Modern UI architecture  
+- **Framer Motion** – Animations and transitions  
+- **Tailwind CSS 4** – Utility-first styling  
+- **Supabase** – Auth + PostgreSQL + RLS  
+- **Canvas API** – Cursor trail rendering  
+- **Lucide React** – Icons  
 
-- **Next.js 16**: App Router, React 19, and full Server Action architecture.
-- **Framer Motion**: Powering all cinematic brand intros and micro-animations.
-- **Tailwind CSS 4**: Modern, high-performance styling engine.
-- **Supabase**: Robust Auth, Postgres Database, and RLS-secured data layer.
-- **Canvas API**: Driving the optimized neon cursor trail performance.
-- **Lucide React**: Industry-standard iconography.
+---
 
-## License
+## 📄 License
 
-MIT
-=======
-# Placement-Chat
->>>>>>> 1d900b66d22bfd67632220daf3d912bdd78e8bfe
+This project is licensed under the **MIT License**.
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐!
+
+---
+
+*“Decode the Interview. Own the Offer.”*
