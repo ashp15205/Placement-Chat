@@ -46,7 +46,7 @@ Students often prepare for internships and placements using scattered, low-quali
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT License**.  See [`LICENSE`](LICENSE) for details.
 
 
 ## ⭐ Support
