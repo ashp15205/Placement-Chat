@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /feed
+Disallow: /profile
+Disallow: /onboarding
+Disallow: /api/
+Disallow: /admin/
+
+Sitemap: https://placementchat.vercel.app/sitemap.xml
