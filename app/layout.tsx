@@ -38,8 +38,8 @@ export const metadata: Metadata = {
       {
         url: "/og-image.png",
         width: 1200,
-        height: 700,
-        alt: "Placement Chat - Verified Interview Experiences",
+        height: 630,
+        alt: "Placement Chat - Student Interview Experiences",
       },
     ],
   },
