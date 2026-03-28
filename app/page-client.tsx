@@ -59,7 +59,7 @@ export default function LandingClient() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-start px-4 text-center transition-all overflow-hidden py-12 md:pt-15">
-      <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-7">
+      <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-6">
         <h1 className="text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
           Placement Chat
         </h1>
@@ -105,7 +105,7 @@ export default function LandingClient() {
         </section>
       )}
 
-      <section className="mt-10 grid gap-8 sm:grid-cols-3 w-full max-w-6xl">
+      <section className="mt-8 grid gap-8 sm:grid-cols-3 w-full max-w-6xl">
         <div className="frost group relative rounded-[32px] p-8 space-y-6 text-left border-transparent transition-all hover:bg-white/80">
           <div className="flex items-center gap-2">
             <div className="h-10 w-10 rounded-xl bg-slate-900 flex items-center justify-center text-white">
