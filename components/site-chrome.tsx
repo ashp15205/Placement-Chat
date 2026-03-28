@@ -310,13 +310,13 @@ export function Footer() {
                 Star on GitHub
               </span>
               <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
-                <div className="mr-3 flex items-center gap-2 border-r border-white/10 pr-3">
+                <div className="mr-3 flex items-center gap-2">
                   <GithubIcon className="h-4 w-4" />
                   <span>GitHub</span>
                 </div>
                 <div className="flex items-center gap-1.5 pl-0">
-                  <StarIcon className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                   <span>{stars !== null ? stars : "—"}</span>
+                  <StarIcon className="h-3 w-3 fill-black text-white" />
                 </div>
               </div>
             </a>
