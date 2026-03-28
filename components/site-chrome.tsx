@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth-provider";
 import {
@@ -72,9 +72,9 @@ export function Navbar() {
             className="flex items-center gap-2 px-3 group transition-opacity active:opacity-70"
           >
             <Logo className="h-7 w-7 sm:h-8 sm:w-8" variant="default" />
-              <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
-                Placement Chat
-              </span>
+            <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
+              Placement Chat
+            </span>
           </Link>
         </div>
 
@@ -252,6 +252,19 @@ export function Navbar() {
 }
 
 export function Footer() {
+  const [stars, setStars] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/ashp15205/Placement-Chat")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.stargazers_count !== undefined) {
+          setStars(data.stargazers_count);
+        }
+      })
+      .catch(() => { });
+  }, []);
+
   return (
     <footer className="relative z-10 w-full bg-transparent pb-3">
       <div className="mx-auto max-w-7xl px-6">
@@ -269,20 +282,29 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Middle: Star the repo (Real-time) */}
+          {/* Middle: Star the repo (Real-time Custom Badge) */}
           <div className="flex w-full items-center justify-center md:w-1/3">
             <a
               href="https://github.com/ashp15205/Placement-Chat"
               target="_blank"
               rel="noreferrer"
-              className="group flex flex-col items-center gap-2 transition-all hover:scale-105"
+              className="group flex flex-col items-center gap-2 transition-all hover:scale-105 active:scale-95"
             >
-              <img
-                src="https://img.shields.io/github/stars/ashp15205/Placement-Chat?style=for-the-badge&logo=github&color=000&labelColor=000&label=STAR%20ON%20GITHUB"
-                alt="GitHub Stars"
-                className="h-[28px] w-auto grayscale rounded-[6px] shadow-sm transition-all group-hover:grayscale-0"
-                onLoad={(e) => (e.currentTarget.style.opacity = "1")}
-              />
+              <span className="text-[9px] font-black uppercase tracking-[0.14em] text-slate-400 group-hover:text-slate-800 transition-colors">
+                Support the Community
+              </span>
+              <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
+                <div className="mr-3 flex items-center gap-2 border-r border-white/20 pr-3">
+                  <GithubIcon className="h-4 w-4" />
+                  <span>Github</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>{stars}</span>
+                  <div className="flex h-3.5 w-3.5 items-center justify-center rounded-sm border-[1.5px] border-white/90 bg-slate-950 p-[1px] transition-transform group-hover:rotate-12">
+                    <StarIcon className="h-full w-full fill-white" />
+                  </div>
+                </div>
+              </div>
             </a>
           </div>
 
