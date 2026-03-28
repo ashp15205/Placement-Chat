@@ -56,7 +56,7 @@ export default function LandingClient() {
   }, []);
 
   const showStats = stats !== null && !loadingStats;
-  
+
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-start px-4 text-center transition-all overflow-hidden py-12 md:pt-15">
       <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-7">
@@ -65,7 +65,7 @@ export default function LandingClient() {
         </h1>
         <p className="mx-auto mt-6 max-w-2xl px-4 text-[10px] font-medium text-slate-500 sm:px-12 sm:text-sm uppercase tracking-[0.16em]">
           Placement Chat is the community-driven platform where engineering students <br />
-          share and discover real placement and internship interview experiences.
+          share and discover placement and internship interview experiences.
         </p>
         <section className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
           <Link

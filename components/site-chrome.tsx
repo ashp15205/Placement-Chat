@@ -71,7 +71,7 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2 px-3 group transition-opacity active:opacity-70"
           >
-            <Logo className="h-7 w-7 sm:h-8 sm:w-8" variant="default" />
+            <Logo className="h-10 w-10" variant="default" />
             <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
               Placement Chat
             </span>
@@ -80,7 +80,7 @@ export function Navbar() {
 
         {/* Middle: Simple Nav Links */}
         <div className="flex justify-center">
-          <div className="flex items-center mb-2 sm:mb-0 gap-1 bg-white/50 backdrop-blur-md rounded-full p-1 border border-slate-200/50 shadow-sm">
+          <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md rounded-full p-1 border border-slate-200/50 shadow-sm">
             {navLinks.map((link) => {
               const active = pathname === link.href;
               return (
@@ -185,7 +185,7 @@ export function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="soft-button flex h-9 items-center justify-center rounded-full px-3 text-[8px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-sm sm:h-10 sm:px-6 sm:text-[10px]"
+                className="soft-button flex h-10 items-center justify-center rounded-full px-4 text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-sm"
               >
                 Sign In
               </Link>
@@ -195,7 +195,7 @@ export function Navbar() {
               <button
                 onClick={() => setOpen((x) => !x)}
                 className={cn(
-                  "flex h-11 w-11 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-[18px] font-black uppercase tracking-tighter text-white shadow-lg transition-all active:scale-95 hover:bg-slate-800 ring-1 ring-slate-200",
+                  "flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-slate-900 text-[18px] font-black uppercase tracking-tighter text-white shadow-lg transition-all active:scale-95 hover:bg-slate-800 ring-1 ring-slate-200",
                   open && "ring-slate-900"
                 )}
               >
