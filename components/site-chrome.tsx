@@ -258,7 +258,7 @@ export function Footer() {
         {/* Blending Separator Line */}
         <div className="mb-3 h-px w-full bg-gradient-to-r from-transparent via-slate-200/60 to-transparent" />
 
-        <div className="flex flex-col items-center justify-between gap-10 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           {/* Left: Brand */}
           <div className="flex w-full items-center justify-center md:w-1/3 md:justify-start">
             <Link href="/" className="group flex items-center gap-2">
@@ -302,7 +302,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-2 flex flex-col items-center justify-center gap-2">
+        <div className="mt-1 flex flex-col items-center justify-center gap-1">
           <div className="text-[10px] font-black tracking-[0.14em] text-slate-500 opacity-60">
             © 2026 PlacementChat
           </div>
