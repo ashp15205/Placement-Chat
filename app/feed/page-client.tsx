@@ -255,13 +255,13 @@ export function FeedClient() {
                <div className="soft-pill flex h-[44px] w-full items-center gap-1 rounded-full p-1 md:w-auto md:flex-[1.1] md:min-w-[150px]">
                   <button
                      onClick={() => setSort("newest")}
-                     className={cn("flex-1 px-2.5 py-1.5 rounded-full text-[8.5px] font-black uppercase tracking-widest transition-all", sort === 'newest' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900')}
+                     className={cn("flex-1 px-2.5 py-1.5 rounded-full text-[8.5px] font-black uppercase tracking-widest transition-all", sort === 'newest' ? 'bg-slate-900 py-2.5 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900')}
                   >
                      Newest
                   </button>
                   <button
                      onClick={() => setSort("popular")}
-                     className={cn("flex-1 px-2.5 py-1.5 rounded-full text-[8.5px] font-black uppercase tracking-widest transition-all", sort === 'popular' ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900')}
+                     className={cn("flex-1 px-2.5 py-1.5 rounded-full text-[8.5px] font-black uppercase tracking-widest transition-all", sort === 'popular' ? 'bg-slate-900 py-2.5 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900')}
                   >
                      Popular
                   </button>
@@ -360,11 +360,11 @@ export function FeedClient() {
 
                         {/* Metrics */}
                         <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:gap-2.5">
-                           <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3 sm:max-w-[140px]">
+                           <div className="w-fit rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3 sm:max-w-[140px]">
                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Process</p>
                               <p className="text-[11px] font-bold text-slate-900">{item.rounds_count} / {item.total_rounds} Rounds</p>
                            </div>
-                           <div className="max-w-auto flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
+                           <div className="w-fit rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Topics</p>
                               <div className="flex flex-wrap gap-1">
                                  {item.topics?.map(t => (

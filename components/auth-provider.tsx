@@ -23,6 +23,7 @@ type AuthContextType = {
   deleteAccount: () => Promise<void>;
   deleteExperience: (id: string) => Promise<void>;
   refreshAuthState: () => Promise<void>;
+  isIntroActive: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -52,9 +53,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [liked, setLiked] = useState<string[]>([]);
   const [saved, setSaved] = useState<string[]>([]);
+  const [isIntroActive, setIsIntroActive] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const supabase = useMemo(() => createClient(), []);
+
+  useEffect(() => {
+    if (pathname === "/") {
+      setIsIntroActive(true);
+      const timer = setTimeout(() => setIsIntroActive(false), 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsIntroActive(false);
+    }
+  }, [pathname]);
+
   const clearLocalAuthState = useCallback(() => {
     setUser(null);
     setProfile(null);
@@ -321,8 +334,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       deleteAccount,
       deleteExperience,
       refreshAuthState,
+      isIntroActive,
     }),
-    [isReady, user, profile, liked, saved, loginWithGoogle, logout, updateProfile, requireLogin, toggleLike, toggleSave, deleteAccount, deleteExperience, refreshAuthState],
+    [isReady, user, profile, liked, saved, loginWithGoogle, logout, updateProfile, requireLogin, toggleLike, toggleSave, deleteAccount, deleteExperience, refreshAuthState, isIntroActive],
   );
 
   return (

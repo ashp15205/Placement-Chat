@@ -38,19 +38,22 @@ export const metadata: Metadata = {
       {
         url: "/og-image.png",
         width: 1200,
-        height: 630,
+        height: 700,
         alt: "PlacementChat - Verified Interview Experiences",
       },
     ],
   },
   icons: {
     icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
 import { IntroAnimation } from "@/components/intro-animation";
 import { PageLoader } from "@/components/page-loader";
 import { NeonTrails } from "@/components/neon-trails";
+import { RootShell } from "@/components/root-shell";
 
 export default function RootLayout({
   children,
@@ -64,16 +67,7 @@ export default function RootLayout({
     >
       <body className="ambient-grain flex flex-col text-[var(--text)]">
         <AuthProvider>
-          <IntroAnimation />
-          <PageLoader />
-          <NeonTrails />
-          <Navbar />
-          <main className="relative z-10 flex min-h-dvh flex-col">
-            <div className="flex-1 pt-15 md:pt-10">
-              {children}
-            </div>
-            <Footer />
-          </main>
+          <RootShell>{children}</RootShell>
         </AuthProvider>
       </body>
     </html>

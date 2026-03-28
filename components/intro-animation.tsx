@@ -10,21 +10,14 @@ export function IntroAnimation() {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
 
-  // Only show on the landing page — on initial session load to keep it premium but non-repetitive
+  // Show on the landing page on every mount/refresh
   useEffect(() => {
     setIsMounted(true);
     if (pathname === "/") {
-      const shown = sessionStorage.getItem("intro_shown");
-      if (shown) {
-        setShow(false);
-        return;
-      }
-
       setShow(true);
       const timer = setTimeout(() => {
         setShow(false);
-        sessionStorage.setItem("intro_shown", "true");
-      }, 5000);
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [pathname]);
@@ -124,7 +117,7 @@ export function IntroAnimation() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
                 transition={{ duration: 2.2, repeat: Infinity, delay: 2.8 }}
-                className="mt-3 text-[11px] font-[1000] uppercase tracking-[0.7em] text-black"
+                className="mt-3 text-[11px] font-[1000] uppercase tracking-[0.3em] text-black"
               >
                 Synchronizing Platform ...
               </motion.p>

@@ -30,12 +30,6 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-bold text-slate-900 tracking-tight uppercase tracking-[0.1em]">4. Authentication</h2>
             <p>Authentication is handled securely via Supabase and Google OAuth. We do not store your passwords. Your session data is encrypted and handled according to industry standards.</p>
           </section>
-
-          <div className="pt-8 border-t border-slate-200">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-              For privacy-related inquiries, contact the developer via the official repository.
-            </p>
-          </div>
         </div>
       </div>
     </main>

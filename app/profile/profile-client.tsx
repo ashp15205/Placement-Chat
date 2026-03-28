@@ -516,7 +516,7 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
             <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Process</p>
             <p className="text-[11px] font-bold text-slate-900">{item.rounds_count || item.total_rounds || 0} Rounds</p>
           </div>
-          <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
+          <div className="w-fit rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
             <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Topics</p>
             <div className="flex flex-wrap gap-1">
               {item.topics?.slice(0, 5).map(t => (
