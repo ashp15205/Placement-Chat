@@ -10,12 +10,21 @@ export function IntroAnimation() {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
 
-  // Only show on the landing page — on initial hard load and when navigating back to "/"
+  // Only show on the landing page — on initial session load to keep it premium but non-repetitive
   useEffect(() => {
     setIsMounted(true);
     if (pathname === "/") {
+      const shown = sessionStorage.getItem("intro_shown");
+      if (shown) {
+        setShow(false);
+        return;
+      }
+
       setShow(true);
-      const timer = setTimeout(() => setShow(false), 5000);
+      const timer = setTimeout(() => {
+        setShow(false);
+        sessionStorage.setItem("intro_shown", "true");
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [pathname]);

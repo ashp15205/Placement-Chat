@@ -4,12 +4,33 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Search, ListChecks, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { usePathname } from "next/navigation";
 
 import { Skeleton } from "@/components/skeleton";
 
 export default function LandingClient() {
   const [stats, setStats] = useState<{ experiences: number; companies: number; students: number } | null>(null);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [isPreloading, setIsPreloading] = useState(true);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/") {
+      const shown = sessionStorage.getItem("intro_shown");
+      if (shown) {
+        setIsPreloading(false);
+        return;
+      }
+
+      const timer = setTimeout(() => {
+        setIsPreloading(false);
+        sessionStorage.setItem("intro_shown", "true");
+      }, 5000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsPreloading(false);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -56,7 +77,8 @@ export default function LandingClient() {
   }, []);
 
   const showStats = stats !== null && !loadingStats;
-
+  if (isPreloading) return <div className="min-h-screen" />;
+  
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-start px-4 text-center transition-all overflow-hidden py-12 md:pt-15">
       <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-7">
