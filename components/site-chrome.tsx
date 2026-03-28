@@ -306,15 +306,12 @@ export function Footer() {
               rel="noreferrer"
               className="group flex flex-col items-center gap-2 transition-all hover:scale-105 active:scale-95"
             >
-              <span className="text-[9px] font-black uppercase tracking-[0.14em] text-slate-400 group-hover:text-slate-800 transition-colors">
-                Star on GitHub
-              </span>
               <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
-                <div className="mr-3 flex items-center gap-2">
+                <div className="mr-2 flex items-center gap-2">
                   <GithubIcon className="h-4 w-4" />
                   <span>GitHub</span>
                 </div>
-                <div className="flex items-center gap-1.5 pl-0">
+                <div className="flex items-center gap-1.5 pl-1">
                   <span>{stars !== null ? stars : "—"}</span>
                   <StarIcon className="h-3 w-3 fill-black text-white" />
                 </div>
