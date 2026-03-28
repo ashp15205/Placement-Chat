@@ -299,8 +299,15 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright below the main line */}
-        <div className="mt-2 flex justify-center text-[10px] font-black tracking-[0.14em] text-slate-500 opacity-60">          © 2026 PlacementChat
+        <div className="mt-2 flex flex-col items-center justify-center gap-2">
+          <div className="text-[10px] font-black tracking-[0.14em] text-slate-500 opacity-60">
+            © 2026 PlacementChat
+          </div>
+          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-slate-400">
+            <Link href="/privacy" className="hover:text-slate-900 transition-colors">Privacy Policy</Link>
+            <span className="opacity-40">&middot;</span>
+            <Link href="/terms" className="hover:text-slate-900 transition-colors">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>
