@@ -265,13 +265,13 @@ export function Footer() {
       return;
     }
 
-    // Fetch fresh
-    fetch("https://api.github.com/repos/ashp15205/Placement-Chat")
+    // Fetch fresh from our own PROXY to avoid CSP issues
+    fetch("/api/github-stars")
       .then((res) => res.json())
       .then((data) => {
-        if (data.stargazers_count !== undefined) {
-          setStars(data.stargazers_count);
-          localStorage.setItem("gh_stars", String(data.stargazers_count));
+        if (data.stars !== undefined) {
+          setStars(data.stars);
+          localStorage.setItem("gh_stars", String(data.stars));
           localStorage.setItem("gh_stars_at", String(Date.now()));
         }
       })
