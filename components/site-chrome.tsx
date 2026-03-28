@@ -80,7 +80,7 @@ export function Navbar() {
 
         {/* Middle: Simple Nav Links */}
         <div className="flex justify-center">
-          <div className="flex items-center gap-1 bg-white/50 backdrop-blur-md rounded-full p-1 border border-slate-200/50 shadow-sm">
+          <div className="flex items-center mb-2 sm:mb-0 gap-1 bg-white/50 backdrop-blur-md rounded-full p-1 border border-slate-200/50 shadow-sm">
             {navLinks.map((link) => {
               const active = pathname === link.href;
               return (
