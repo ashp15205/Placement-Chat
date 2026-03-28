@@ -255,14 +255,30 @@ export function Footer() {
   const [stars, setStars] = useState<number | null>(null);
 
   useEffect(() => {
+    // Check localStorage cache first
+    const cached = localStorage.getItem("gh_stars");
+    const cachedAt = localStorage.getItem("gh_stars_at");
+    const oneHour = 60 * 60 * 1000;
+
+    if (cached && cachedAt && Date.now() - Number(cachedAt) < oneHour) {
+      setStars(Number(cached));
+      return;
+    }
+
+    // Fetch fresh
     fetch("https://api.github.com/repos/ashp15205/Placement-Chat")
       .then((res) => res.json())
       .then((data) => {
         if (data.stargazers_count !== undefined) {
           setStars(data.stargazers_count);
+          localStorage.setItem("gh_stars", String(data.stargazers_count));
+          localStorage.setItem("gh_stars_at", String(Date.now()));
         }
       })
-      .catch(() => { });
+      .catch(() => {
+        // Use cached even if expired on failure
+        if (cached) setStars(Number(cached));
+      });
   }, []);
 
   return (
@@ -291,18 +307,16 @@ export function Footer() {
               className="group flex flex-col items-center gap-2 transition-all hover:scale-105 active:scale-95"
             >
               <span className="text-[9px] font-black uppercase tracking-[0.14em] text-slate-400 group-hover:text-slate-800 transition-colors">
-                Support the Community
+                Star on GitHub
               </span>
               <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
-                <div className="mr-3 flex items-center gap-2 pr-1">
+                <div className="mr-3 flex items-center gap-2 border-r border-white/10 pr-3">
                   <GithubIcon className="h-4 w-4" />
-                  <span>Github</span>
+                  <span>GitHub</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span>{stars}</span>
-                  <div className="flex h-3.5 w-3.5 items-center justify-center rounded-sm bg-slate-950 p-[1px] transition-transform group-hover:scale-110">
-                    <StarIcon className="h-full w-full fill-white" />
-                  </div>
+                <div className="flex items-center gap-1.5 pl-0">
+                  <StarIcon className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                  <span>{stars !== null ? stars : "—"}</span>
                 </div>
               </div>
             </a>
