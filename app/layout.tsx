@@ -48,6 +48,9 @@ export const metadata: Metadata = {
     shortcut: "/icon.png",
     apple: "/icon.png",
   },
+  verification: {
+    google: "iq-Xb7-noSh-hg39oiLxZ1dsKvV4g5qQa2Hifx7I94w",
+  },
 };
 
 import { IntroAnimation } from "@/components/intro-animation";
