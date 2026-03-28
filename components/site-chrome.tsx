@@ -269,17 +269,20 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Middle: Star the repo */}
+          {/* Middle: Star the repo (Real-time) */}
           <div className="flex w-full items-center justify-center md:w-1/3">
             <a
-              href="https://github.com/ashishpatil2005/PlacementChat"
+              href="https://github.com/ashp15205/Placement-Chat"
               target="_blank"
               rel="noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-slate-200/70 bg-white/40 px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-slate-600 shadow-sm transition-all hover:bg-slate-900 hover:text-white"
+              className="group flex flex-col items-center gap-2 transition-all hover:scale-105"
             >
-              <StarIcon className="h-3.5 w-3.5 fill-current transition-colors" />
-              <span>Star the repo</span>
-              <GithubIcon className="h-3.5 w-3.5 opacity-80 group-hover:opacity-100 transition-opacity" />
+              <img
+                src="https://img.shields.io/github/stars/ashp15205/Placement-Chat?style=for-the-badge&logo=github&color=000&labelColor=000&label=STAR%20ON%20GITHUB"
+                alt="GitHub Stars"
+                className="h-[28px] w-auto grayscale rounded-[6px] shadow-sm transition-all group-hover:grayscale-0"
+                onLoad={(e) => (e.currentTarget.style.opacity = "1")}
+              />
             </a>
           </div>
 
