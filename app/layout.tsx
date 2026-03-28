@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: "Placement Chat - Decode the Interview. Own the Offer.",
     template: "%s - Placement Chat",
   },
-  description: "The premier hub for verified internship and placement interview intelligence. Access high-quality, student-driven data for SDE, Core, and Management roles. Decode the interview, own the offer.",
+  description: "The premier hub for student-driven internship and placement interview intelligence. Access high-quality data for SDE, Core, and Management roles. Decode the interview, own the offer.",
   keywords: ["placement", "internship", "interview experiences", "SDE", "engineering", "college placements", "Placement Chat", "interview preparation"],
   authors: [{ name: "Ashish Patil" }],
   creator: "Ashish Patil",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://placementchat.vercel.app",
     title: "Placement Chat | Peer-to-Peer Interview Intelligence",
-    description: "Navigate your career with real-world interview insights from fellow students. Verified logs for DSA, System Design, and more.",
+    description: "Navigate your career with interview insights from fellow students. Structured logs for DSA, System Design, and more.",
     siteName: "Placement Chat",
     images: [
       {
