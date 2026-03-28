@@ -41,6 +41,7 @@ export type Experience = {
   rounds_count?: number;
   total_rounds?: number;
   topics?: string[];
+  sources?: string[];
   overview?: string;
   relative_time?: string;
   month_label?: string;

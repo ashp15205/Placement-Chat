@@ -85,6 +85,7 @@ export function ShareForm() {
   const [difficulty, setDifficulty] = useState<"Easy" | "Medium" | "Hard">("Medium");
   const [overview, setOverview] = useState("");
   const [tips, setTips] = useState("");
+  const [source, setSource] = useState("");
   const [showOther, setShowOther] = useState(false);
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
@@ -107,7 +108,7 @@ export function ShareForm() {
       const { data: exp } = await supabase
         .from("experiences")
         .select(
-          "id, user_id, company_name, company_location, role_name, opportunity_type, recruitment_route, compensation, branch, selection_status, month_label, hiring_year, rounds_detail, total_rounds, topics, difficulty_label, overview, prep_tips",
+          "id, user_id, company_name, company_location, role_name, opportunity_type, recruitment_route, compensation, branch, selection_status, month_label, hiring_year, rounds_detail, total_rounds, topics, sources, difficulty_label, overview, prep_tips",
         )
         .eq("id", editId)
         .eq("user_id", user.id)
@@ -143,6 +144,7 @@ export function ShareForm() {
       const safeTotalRounds = Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Number(exp.total_rounds || 3)));
       setTotalRounds(safeTotalRounds.toString());
       setTopics(exp.topics || []);
+      setSource(exp.sources?.[0] || "");
       setDifficulty(exp.difficulty_label === "Easy" || exp.difficulty_label === "Hard" ? exp.difficulty_label : "Medium");
       setOverview(exp.overview || "");
       setTips(exp.prep_tips || "");
@@ -202,9 +204,13 @@ export function ShareForm() {
         setMessage(`You can add up to ${maxRoundsAllowed} rounds.`);
         return false;
       }
-      const emptyRound = rounds.find(r => !r.roundType.trim() || !r.summary.trim());
-      if (emptyRound) {
-        setMessage("Please fill round details for all rounds (*)");
+      const invalidRound = rounds.find(r => !r.roundType.trim() || !r.duration.trim() || !r.summary.trim());
+      if (invalidRound) {
+        setMessage("Please fill Title, Duration and Summary for all rounds (*)");
+        return false;
+      }
+      if (Number(totalRounds) < 1 || !totalRounds) {
+        setMessage("Total Process Rounds must be at least 1.");
         return false;
       }
     }
@@ -272,6 +278,7 @@ export function ShareForm() {
       opportunity_type: type,
       recruitment_route: access,
       compensation: compensation.trim() || undefined,
+      sources: access === "Off-Campus" && source.trim() ? [source.trim()] : undefined,
       branch: branch as Experience["branch"],
       hiring_year: Number.isFinite(Number(year)) ? Number(year) : new Date().getFullYear(),
       month_label: `${month} ${year}`,
@@ -423,6 +430,13 @@ export function ShareForm() {
                   </div>
                 </div>
                 <div className="space-y-1.5">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-2">{type === 'Internship' ? 'Stipend/month' : 'CTC'}</p>
+                  <input value={compensation} onChange={e => setCompensation(e.target.value)} placeholder={type === 'Internship' ? "eg: 40k/month" : "eg: 8/LPA "} className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Recruitment Route *</p>
                   <div className="flex h-11 soft-pill rounded-xl p-1">
                     {(["On-Campus", "Off-Campus"] as const).map((a) => (
@@ -430,11 +444,18 @@ export function ShareForm() {
                     ))}
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-1.5">
-                <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">{type === 'Internship' ? 'Stipend/month' : 'CTC'} (Optional)</p>
-                <input value={compensation} onChange={e => setCompensation(e.target.value)} placeholder={type === 'Internship' ? "eg: 40k/month" : "eg: 8/LPA "} className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
+                {access === "Off-Campus" && (
+                  <div className="space-y-2 animate-in fade-in slide-in-from-right-1 duration-200">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Source (Where did you find it?)</p>
+                    <input
+                      value={source}
+                      onChange={e => setSource(e.target.value)}
+                      placeholder="e.g. LinkedIn, Referral, Company Portal"
+                      className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -468,14 +489,17 @@ export function ShareForm() {
 
           {step === 2 && (
             <div className="space-y-6">
-              <div className="flex flex-col items-start justify-between gap-4 border-b border-black/5 pb-4 md:flex-row md:items-center">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold tracking-tight">Interview Rounds</h3>
+              <div className="border-b border-black/5 pb-4">
+                <div className="space-y-1 text-left">
+                  <h3 className="text-xl font-bold tracking-tight text-slate-900">Interview Rounds</h3>
                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Detail the specifics of each evaluation round.</p>
                 </div>
+              </div>
+
+              <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center px-1">
                 <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
-                  <div className="soft-pill flex items-center gap-2 rounded-xl px-3 py-1">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-700">Total Process Rounds:</p>
+                  <div className="flex items-center gap-2 rounded-full border-2 border-slate-900 bg-white px-4 py-2 shadow-sm">
+                    <p className="text-[9.5px] font-black uppercase tracking-widest text-slate-800">Total Hiring Rounds:</p>
                     <input
                       type="number"
                       min={1}
@@ -483,23 +507,26 @@ export function ShareForm() {
                       value={totalRounds}
                       onChange={e => {
                         const raw = e.target.value;
-                        if (raw === "") {
-                          setTotalRounds("1");
-                          return;
+                        if (raw === "" || Number.isFinite(Number(raw))) {
+                          setTotalRounds(raw);
                         }
-                        const n = Number(raw);
-                        if (!Number.isFinite(n)) return;
-                        setTotalRounds(Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.floor(n))).toString());
                       }}
                       className="w-10 bg-transparent text-[10px] font-black outline-none text-center"
+                      onBlur={() => {
+                        if (!totalRounds || Number(totalRounds) < 1) {
+                          setTotalRounds("1");
+                        }
+                      }}
                     />
                   </div>
-                  <button type="button" onClick={addRound} disabled={rounds.length >= maxRoundsAllowed} className="flex items-center gap-2 soft-button rounded-full px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"> <Plus className="h-3 w-3" /> Add Round </button>
+                  <button type="button" onClick={addRound} disabled={rounds.length >= maxRoundsAllowed} className="flex items-center gap-2 soft-button rounded-full px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"> <Plus className="h-3 w-3" /> Add Round </button>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-bold">
+                    You can add up to {maxRoundsAllowed} rounds.
+                  </p>
                 </div>
               </div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                You can add up to {maxRoundsAllowed} rounds.
-              </p>
 
               <div className="custom-scrollbar max-h-[450px] space-y-6 overflow-y-auto pr-0 md:pr-2">
                 {rounds.map((round, idx) => (
@@ -507,12 +534,12 @@ export function ShareForm() {
                     <button type="button" onClick={() => removeRound(idx)} disabled={rounds.length === 1} className="absolute right-4 top-4 text-muted-foreground hover:text-rose-500 transition-all disabled:opacity-40 disabled:hover:text-muted-foreground"> <Trash2 className="h-4 w-4" /> </button>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-1.5">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Round Title</p>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Round Title *</p>
                         <input value={round.roundType} onChange={e => updateRound(idx, { roundType: e.target.value })} placeholder="Round Name" className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
                       </div>
                       <div className="space-y-1.5">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Duration</p>
-                        <input value={round.duration} onChange={e => updateRound(idx, { duration: e.target.value })} placeholder="Duration" className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
+                        <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Duration *</p>
+                        <input value={round.duration} onChange={e => updateRound(idx, { duration: e.target.value })} placeholder="eg: 45 mins" className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
                       </div>
                     </div>
 

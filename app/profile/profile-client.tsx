@@ -102,7 +102,7 @@ export default function ProfileClient() {
     if (!user) return;
     const fetchProfileData = async () => {
       const experienceColumns =
-        "id,user_id,author_name,college,company_name,company_location,role_name,opportunity_type,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,overview,rounds_summary,likes_count,month_label,anonymous,created_at" as const;
+        "id,user_id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,likes_count,month_label,anonymous,created_at" as const;
 
       const { data: contributions } = await supabase
         .from("experiences")
@@ -406,6 +406,10 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
           <div className="flex flex-wrap items-center gap-2">
             <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[8px] font-black uppercase tracking-widest", item.selection_status === 'Selected' ? "bg-emerald-50 text-emerald-600 border border-emerald-500/10" : item.selection_status === 'Waitlisted' ? "bg-amber-50 text-amber-600 border border-amber-500/10" : "bg-rose-50 text-rose-600 border border-rose-500/10")}>{item.selection_status}</span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white">{item.opportunity_type}</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 px-3 py-1 text-[8px] font-black uppercase tracking-widest">{item.recruitment_route}</span>
+            {item.sources && item.sources.length > 0 && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-500/10 px-3 py-1 text-[8px] font-black uppercase tracking-widest">Source: {item.sources.join(", ")}</span>
+            )}
           </div>
           <div className="space-y-1">
             <h3 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{item.company_name}</h3>

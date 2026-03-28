@@ -47,7 +47,7 @@ import { ExperienceSkeleton } from "@/components/skeleton";
 import { createClient } from "@/lib/supabase/client";
 
 const FEED_COLUMNS =
-   "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,overview,rounds_summary,likes_count,created_at" as const;
+   "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,likes_count,created_at" as const;
 
 export function FeedClient() {
    const { liked, saved, toggleLike, toggleSave, isReady, requireLogin } = useAuth();
@@ -341,9 +341,11 @@ export function FeedClient() {
                               <Briefcase className="h-3.5 w-3.5 text-slate-900" />
                               <span className="text-xs font-semibold">{item.role_name}</span>
                            </div>
-                           <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-normal">
+                           <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-normal uppercase tracking-widest font-black">
                               <Layers className="h-3.5 w-3.5" />
                               {item.opportunity_type}
+                              <span className="opacity-40">&middot;</span>
+                              {item.recruitment_route}
                            </div>
                            {item.compensation && (
                               <div className="flex items-center gap-2 text-[11px] font-bold text-emerald-600">

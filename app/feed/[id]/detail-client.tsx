@@ -28,7 +28,7 @@ import { ReportModal } from "@/components/report-modal";
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
 
 const DETAIL_COLUMNS =
-  "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,overview,rounds_summary,rounds_detail,prep_tips,likes_count,created_at" as const;
+  "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,rounds_detail,prep_tips,likes_count,created_at" as const;
 
 export default function ExperienceDetailClient() {
    const params = useParams<{ id: string }>();
@@ -147,6 +147,9 @@ export default function ExperienceDetailClient() {
                            <div className="flex items-center gap-2 transition-colors hover:text-slate-900"><ShieldCheck className="h-3.5 w-3.5 text-slate-900" /> {item.recruitment_route || "On-Campus"}</div>
                            {item.compensation && (
                               <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-500/10"><Zap className="h-3.5 w-3.5" /> {item.compensation}</div>
+                           )}
+                           {item.sources && item.sources.length > 0 && (
+                              <div className="flex items-center gap-2 text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-black/5"><HelpCircle className="h-3.5 w-3.5" /> Source: {item.sources.join(", ")}</div>
                            )}
                         </div>
                      </div>

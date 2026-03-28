@@ -18,6 +18,7 @@ type ExperienceDraft = {
   rounds_count: number;
   total_rounds: number;
   topics: string[];
+  sources?: string[];
   selection_status: "Selected" | "Rejected" | "Waitlisted";
   difficulty_score: number;
   difficulty_label: "Easy" | "Medium" | "Hard";
