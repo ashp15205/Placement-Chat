@@ -19,11 +19,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PlacementChat - Decode the Interview. Own the Offer.",
-    template: "%s - PlacementChat",
+    default: "Placement Chat - Decode the Interview. Own the Offer.",
+    template: "%s - Placement Chat",
   },
   description: "The premier hub for verified internship and placement interview intelligence. Access high-quality, student-driven data for SDE, Core, and Management roles. Decode the interview, own the offer.",
-  keywords: ["placement", "internship", "interview experiences", "SDE", "engineering", "college placements", "PlacementChat", "interview preparation"],
+  keywords: ["placement", "internship", "interview experiences", "SDE", "engineering", "college placements", "Placement Chat", "interview preparation"],
   authors: [{ name: "Ashish Patil" }],
   creator: "Ashish Patil",
   metadataBase: new URL("https://placementchat.vercel.app"),
@@ -31,15 +31,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://placementchat.vercel.app",
-    title: "PlacementChat | Peer-to-Peer Interview Intelligence",
+    title: "Placement Chat | Peer-to-Peer Interview Intelligence",
     description: "Navigate your career with real-world interview insights from fellow students. Verified logs for DSA, System Design, and more.",
-    siteName: "PlacementChat",
+    siteName: "Placement Chat",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 700,
-        alt: "PlacementChat - Verified Interview Experiences",
+        alt: "Placement Chat - Verified Interview Experiences",
       },
     ],
   },

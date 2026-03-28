@@ -63,8 +63,9 @@ export default function LandingClient() {
         <h1 className="text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
           Placement Chat
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl px-4 text-[10px] font-medium text-slate-500 sm:px-12 sm:text-base uppercase tracking-[0.16em]">
-          Your one-stop destination for <br />placement insights and interview experiences
+        <p className="mx-auto mt-6 max-w-2xl px-4 text-[10px] font-medium text-slate-500 sm:px-12 sm:text-sm uppercase tracking-[0.16em]">
+          Placement Chat is the community-driven platform for sharing and navigating <br />
+          verified interview experiences to help students launch their tech careers.
         </p>
         <section className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
           <Link

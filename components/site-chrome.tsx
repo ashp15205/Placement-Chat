@@ -72,9 +72,9 @@ export function Navbar() {
             className="flex items-center gap-2 px-3 group transition-opacity active:opacity-70"
           >
             <Logo className="h-7 w-7 sm:h-8 sm:w-8" variant="default" />
-            <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
-              PlacementChat
-            </span>
+              <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
+                Placement Chat
+              </span>
           </Link>
         </div>
 
@@ -264,7 +264,7 @@ export function Footer() {
             <Link href="/" className="group flex items-center gap-2">
               <Logo className="h-6 w-6 transition-transform group-hover:scale-110" />
               <span className="text-[11px] font-black uppercase tracking-[0.16em] text-slate-800">
-                PlacementChat
+                Placement Chat
               </span>
             </Link>
           </div>
@@ -304,7 +304,7 @@ export function Footer() {
 
         <div className="mt-1 flex flex-col items-center justify-center gap-1">
           <div className="text-[10px] font-black tracking-[0.14em] text-slate-500 opacity-60">
-            © 2026 PlacementChat
+            © 2026 Placement Chat
           </div>
           <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-slate-400">
             <Link href="/privacy" className="hover:text-slate-900 transition-colors">Privacy Policy</Link>
