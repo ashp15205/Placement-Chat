@@ -71,7 +71,7 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2 px-3 group transition-opacity active:opacity-70"
           >
-            <Logo className="h-10 w-10" variant="default" />
+            <Logo className="h-9 w-9" variant="default" />
             <span className="hidden text-sm font-semibold tracking-tight text-slate-900 transition-colors group-hover:text-slate-700 sm:inline sm:text-base">
               Placement Chat
             </span>
