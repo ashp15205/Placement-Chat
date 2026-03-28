@@ -294,13 +294,13 @@ export function Footer() {
                 Support the Community
               </span>
               <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
-                <div className="mr-3 flex items-center gap-2 border-r border-white/20 pr-3">
+                <div className="mr-3 flex items-center gap-2 pr-1">
                   <GithubIcon className="h-4 w-4" />
                   <span>Github</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span>{stars}</span>
-                  <div className="flex h-3.5 w-3.5 items-center justify-center rounded-sm border-[1.5px] border-white/90 bg-slate-950 p-[1px] transition-transform group-hover:rotate-12">
+                  <div className="flex h-3.5 w-3.5 items-center justify-center rounded-sm bg-slate-950 p-[1px] transition-transform group-hover:scale-110">
                     <StarIcon className="h-full w-full fill-white" />
                   </div>
                 </div>
