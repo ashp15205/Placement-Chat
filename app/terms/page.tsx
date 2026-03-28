@@ -6,10 +6,10 @@ import { ArrowLeft, Users, Pencil, Slash, FileUser, ListChecks, UserMinus, Shiel
 export default function TermsPage() {
   const sections = [
     {
-      title: "1. Who Can Use PlacementChat",
+      title: "1. Who Can Use Placement Chat",
       icon: <Users className="h-4 w-4" />,
       points: [
-        "PlacementChat is built primarily for engineering students",
+        "Placement Chat is built primarily for engineering students",
         "A valid Google account is required to contribute",
         "Browsing is open to everyone without an account"
       ]
@@ -42,8 +42,8 @@ export default function TermsPage() {
       title: "4. Your Content",
       icon: <FileUser className="h-4 w-4" />,
       points: [
-        "You own the experiences you share on PlacementChat",
-        "By posting, you grant PlacementChat a license to display your content on the platform",
+        "You own the experiences you share on Placement Chat",
+        "By posting, you grant Placement Chat a license to display your content on the platform",
         "We reserve the right to remove content that violates these terms without prior notice"
       ]
     },
@@ -53,7 +53,7 @@ export default function TermsPage() {
       points: [
         "Share only experiences you personally went through",
         "Do not exaggerate or misrepresent what happened",
-        "PlacementChat is not responsible for any decisions made based on shared experiences"
+        "Placement Chat is not responsible for any decisions made based on shared experiences"
       ]
     },
     {
@@ -68,7 +68,7 @@ export default function TermsPage() {
       title: "7. Intellectual Property",
       icon: <Shield className="h-4 w-4" />,
       points: [
-        "The PlacementChat name, logo and design are our property",
+        "The Placement Chat name, logo and design are our property",
         "Do not copy or replicate the platform",
         "Content shared by users belongs to the respective users"
       ]
@@ -77,7 +77,7 @@ export default function TermsPage() {
       title: "8. Disclaimer",
       icon: <Info className="h-4 w-4" />,
       points: [
-        "PlacementChat is a community-driven platform",
+        "Placement Chat is a community-driven platform",
         "We do not guarantee any job or internship outcomes",
         "Experiences shared are personal opinions of individual students",
         "We are not affiliated with any company, college or recruiter mentioned on the platform"
@@ -87,7 +87,7 @@ export default function TermsPage() {
       title: "9. Limitation of Liability",
       icon: <Scale className="h-4 w-4" />,
       points: [
-        "PlacementChat is not liable for any decisions made based on content shared on this platform",
+        "Placement Chat is not liable for any decisions made based on content shared on this platform",
         "We are not responsible for the practices of third party services including Google, Supabase and Vercel"
       ]
     },
@@ -96,7 +96,7 @@ export default function TermsPage() {
       icon: <RefreshCw className="h-4 w-4" />,
       points: [
         "These terms may be updated anytime",
-        "Continued use of PlacementChat means you accept the latest version"
+        "Continued use of Placement Chat means you accept the latest version"
       ]
     }
   ];

@@ -84,7 +84,7 @@ export default function PrivacyPage() {
       icon: <RefreshCw className="h-4 w-4" />,
       points: [
         "This policy may be updated from time to time",
-        "Continued use of PlacementChat means you accept the latest version"
+        "Continued use of Placement Chat means you accept the latest version"
       ]
     }
   ];
