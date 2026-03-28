@@ -9,13 +9,14 @@ import {
    Heart,
    Bookmark,
    Share2,
-   Zap,
+   Wallet,
    Clock,
    Building2,
    MapPin,
    User,
    GraduationCap,
    Briefcase,
+   ShieldCheck,
    Layers,
    Flag
 } from "lucide-react";
@@ -219,7 +220,7 @@ export function FeedClient() {
 
    return (
       <main className="mx-auto w-full max-w-4xl px-4 pt-8 pb-10 md:pt-12 md:pb-16 transition-all">
-         <div className="frost-strong mb-5 rounded-[34px] p-6 text-left">
+         <div className="frost-strong mb-2 rounded-[34px] p-6 text-left">
             <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Experiences</h1>
             <p className="mt-2 text-base text-slate-500 font-normal">Directly shared by the students who took the interviews</p>
 
@@ -303,21 +304,22 @@ export function FeedClient() {
                      <Link
                         key={item.id}
                         href={`/feed/${item.id}`}
-                        className="frost elevate group block border p-4 sm:p-5 rounded-[28px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
+                        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
                      >
                         {/* Header: Author Info */}
-                        <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-slate-200/50 pb-3 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+                        <div className="mb-2 flex flex-wrap items-center gap-2 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
                            <User className="h-2.5 w-2.5 text-slate-900" />
                            <span>{item.author_name || "Student"}</span>
                            <span className="opacity-40">&middot;</span>
                            <GraduationCap className="h-2.5 w-2.5 text-slate-900" />
                            <span>{item.college}</span>
                            <span className="opacity-40">&middot;</span>
+                           <Layers className="h-2.5 w-2.5 text-slate-900" />
                            <span>{item.branch}</span>
                         </div>
 
                         {/* Row: Company & Outcome */}
-                        <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:gap-4">
+                        <div className="mb-2 flex flex-col items-start justify-between gap-2 sm:flex-row sm:gap-4">
                            <div className="space-y-0.5">
                               <div className="flex flex-wrap items-center gap-2">
                                  <Building2 className="h-4 w-4 text-slate-900 shrink-0" />
@@ -336,33 +338,34 @@ export function FeedClient() {
                         </div>
 
                         {/* Details: Role / Type / Comp */}
-                        <div className="flex flex-wrap items-center gap-4 mb-3.5">
+                        <div className="flex flex-wrap items-center gap-4 mb-2.5">
                            <div className="flex items-center gap-2">
                               <Briefcase className="h-3.5 w-3.5 text-slate-900" />
                               <span className="text-xs font-semibold">{item.role_name}</span>
                            </div>
-                           <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-normal uppercase tracking-widest font-black">
-                              <Layers className="h-3.5 w-3.5" />
+                           <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-normal uppercase tracking-widest font-black">
+                              <Building2 className="h-3.5 w-3.5" />
                               {item.opportunity_type}
                               <span className="opacity-40">&middot;</span>
+                              <ShieldCheck className="h-3.5 w-3.5" />
                               {item.recruitment_route}
                            </div>
                            {item.compensation && (
-                              <div className="flex items-center gap-2 text-[11px] font-bold text-emerald-600">
-                                 <Zap className="h-3.5 w-3.5" />
+                              <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                                 <Wallet className="h-3.5 w-3.5" />
                                  {item.compensation}
                               </div>
                            )}
                         </div>
 
                         {/* Metrics */}
-                        <div className="mb-4 flex flex-col gap-2.5 sm:flex-row sm:gap-3">
-                           <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-2 px-3.5 sm:max-w-[140px]">
+                        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:gap-2.5">
+                           <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3 sm:max-w-[140px]">
                               <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Process</p>
                               <p className="text-[11px] font-bold text-slate-900">{item.rounds_count} / {item.total_rounds} Rounds</p>
                            </div>
-                           <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-2 px-3.5">
-                              <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-1">Topics</p>
+                           <div className="max-w-auto flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
+                              <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Topics</p>
                               <div className="flex flex-wrap gap-1">
                                  {item.topics?.map(t => (
                                     <span key={t} className="px-1.5 py-0.5 rounded-md bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider">
@@ -374,7 +377,7 @@ export function FeedClient() {
                         </div>
 
                         {/* Narrative Snippet */}
-                        <div className="mb-2 space-y-1.5 border-t border-slate-100 pt-3">
+                        <div className="mb-1.5 space-y-1 border-t border-slate-100 pt-2.5">
                            <p className="text-xs font-normal text-slate-500 leading-relaxed line-clamp-1 italic opacity-80">
                               &ldquo;{item.overview || item.rounds_summary}&rdquo;
                            </p>
@@ -384,19 +387,17 @@ export function FeedClient() {
                         </div>
 
                         {/* Footer */}
-                        <div className="mt-1 flex flex-col items-start justify-between gap-4 border-t border-slate-200/50 pt-4 sm:flex-row sm:items-center">
-                           <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                        <div className="mt-1 flex flex-col items-start justify-between gap-4 border-t border-slate-200/50 pt-3 sm:flex-row sm:items-center">
+                           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
                               <button
                                  onClick={(e) => { e.preventDefault(); void handleToggleLike(item.id); }}
                                  className={cn(
-                                    "flex h-10 px-4 items-center gap-2.5 rounded-full border transition-all active:scale-95 shadow-sm",
-                                    liked.includes(item.id) ? "bg-rose-50 text-rose-500 border-rose-500/20" : "bg-white/80 text-slate-900 border-slate-200 hover:border-slate-400"
+                                    "flex items-center gap-1.5 transition-colors hover:text-rose-500",
+                                    liked.includes(item.id) ? "text-rose-500" : "text-slate-500"
                                  )}
                               >
-                                 <Heart className={cn("h-3.5 w-3.5", liked.includes(item.id) && "fill-rose-500")} />
-                                 <span className="text-[9px] font-black uppercase tracking-widest">
-                                    {item.likes_count ?? 0}
-                                 </span>
+                                 <Heart className={cn("h-3 w-3", liked.includes(item.id) && "fill-current")} />
+                                 {item.likes_count ?? 0} {item.likes_count === 1 ? 'Like' : 'Likes'}
                               </button>
                               <button
                                  onClick={(e) => {
@@ -404,20 +405,20 @@ export function FeedClient() {
                                     if (!requireLogin()) return;
                                     void toggleSave(item.id).catch(() => showFlash("Could not update save"));
                                  }}
-                                 className={cn("flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest transition-colors hover:text-accent", saved.includes(item.id) ? "text-accent" : "text-slate-500")}
+                                 className={cn("flex items-center gap-1.5 transition-colors hover:text-slate-900", saved.includes(item.id) ? "text-slate-900" : "text-slate-500")}
                               >
-                                 <Bookmark className={cn("h-3.5 w-3.5", saved.includes(item.id) && "fill-current")} />
+                                 <Bookmark className={cn("h-3 w-3", saved.includes(item.id) && "fill-current")} />
                                  {saved.includes(item.id) ? "Saved" : "Save"}
                               </button>
-                              <button onClick={(e) => { e.preventDefault(); copyExperienceLink(item.id); }} className="flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors">
-                                 <Share2 className="h-3.5 w-3.5" />
+                              <button onClick={(e) => { e.preventDefault(); copyExperienceLink(item.id); }} className="flex items-center gap-1.5 transition-colors hover:text-slate-900">
+                                 <Share2 className="h-3 w-3" />
                                  Share
                               </button>
                               <button
                                  onClick={(e) => { e.preventDefault(); if (requireLogin()) setReportId(item.id); }}
-                                 className="flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-slate-500 hover:text-amber-600 transition-colors"
+                                 className="flex items-center gap-1.5 transition-colors hover:text-amber-600"
                               >
-                                 <Flag className="h-3.5 w-3.5" />
+                                 <Flag className="h-3 w-3" />
                                  Report
                               </button>
                            </div>

@@ -21,14 +21,16 @@ import {
    Zap,
    ShieldCheck,
    Briefcase,
-   MapPin
+   MapPin,
+   Globe,
+   Wallet
 } from "lucide-react";
 import { ReportModal } from "@/components/report-modal";
 
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
 
 const DETAIL_COLUMNS =
-  "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,rounds_detail,prep_tips,likes_count,created_at" as const;
+   "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,month_label,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,rounds_detail,prep_tips,likes_count,created_at,anonymous,linkedin_url" as const;
 
 export default function ExperienceDetailClient() {
    const params = useParams<{ id: string }>();
@@ -48,29 +50,29 @@ export default function ExperienceDetailClient() {
    }, []);
 
    useEffect(() => {
-     if (!isReady) return;
-     const fetchItem = async () => {
-        const { data } = await supabase.from("experiences").select(DETAIL_COLUMNS).eq("id", params.id).single();
-        if (data) {
-          const typed = data as Experience;
-          setItem(typed);
-          setLikesCount(typed.likes_count ?? 0);
-        }
-        setLoading(false);
+      if (!isReady) return;
+      const fetchItem = async () => {
+         const { data } = await supabase.from("experiences").select(DETAIL_COLUMNS).eq("id", params.id).single();
+         if (data) {
+            const typed = data as Experience;
+            setItem(typed);
+            setLikesCount(typed.likes_count ?? 0);
+         }
+         setLoading(false);
       };
-     fetchItem();
+      fetchItem();
    }, [params.id, supabase, isReady, user]);
 
    if (!isReady) return null;
 
    const handleShare = async () => {
       try {
-        await navigator.clipboard.writeText(window.location.href);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+         await navigator.clipboard.writeText(window.location.href);
+         setCopied(true);
+         setTimeout(() => setCopied(false), 2000);
       } catch {
-        setFlash("Could not copy link");
-        setTimeout(() => setFlash(""), 2000);
+         setFlash("Could not copy link");
+         setTimeout(() => setFlash(""), 2000);
       }
    };
 
@@ -119,7 +121,7 @@ export default function ExperienceDetailClient() {
                </div>
             </div>
          ) : (
-            <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-8">
                {/* Fixed Header Bar for Desktop / Static Top Bar */}
                <div className="frost-strong flex flex-col items-center justify-between gap-4 rounded-[32px] p-5 md:flex-row md:gap-8 md:p-8">
                   <div className="flex flex-col items-center md:items-start gap-3">
@@ -146,28 +148,30 @@ export default function ExperienceDetailClient() {
                            <div className="flex items-center gap-2 transition-colors hover:text-slate-900"><Building2 className="h-3.5 w-3.5 text-slate-900" /> {item.opportunity_type}</div>
                            <div className="flex items-center gap-2 transition-colors hover:text-slate-900"><ShieldCheck className="h-3.5 w-3.5 text-slate-900" /> {item.recruitment_route || "On-Campus"}</div>
                            {item.compensation && (
-                              <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-500/10"><Zap className="h-3.5 w-3.5" /> {item.compensation}</div>
+                              <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-500/10"><Wallet className="h-3.5 w-3.5" /> {item.compensation}</div>
                            )}
                            {item.sources && item.sources.length > 0 && (
-                              <div className="flex items-center gap-2 text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-black/5"><HelpCircle className="h-3.5 w-3.5" /> Source: {item.sources.join(", ")}</div>
+                              <div className="flex items-center gap-2 text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-black/5">
+                                 <Globe className="h-3.5 w-3.5" /> Source: {item.anonymous ? item.sources.filter(s => !s.toLowerCase().includes('linkedin.com/in/')).join(", ") : item.sources.join(", ")}
+                              </div>
                            )}
                         </div>
                      </div>
                   </div>
 
-                  <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:gap-3">
+                  <div className="flex w-full flex-wrap items-center justify-center gap-2 md:w-auto md:flex-nowrap md:gap-3">
                      <button
                         onClick={async () => {
-                          if (!requireLogin()) return;
-                          const currentlyLiked = isLiked;
-                          setLikesCount((prev) => Math.max(0, prev + (currentlyLiked ? -1 : 1)));
-                          try {
-                            await toggleLike(item.id);
-                          } catch {
-                            setLikesCount((prev) => Math.max(0, prev + (currentlyLiked ? 1 : -1)));
-                            setFlash("Could not update like");
-                            setTimeout(() => setFlash(""), 2000);
-                          }
+                           if (!requireLogin()) return;
+                           const currentlyLiked = isLiked;
+                           setLikesCount((prev) => Math.max(0, prev + (currentlyLiked ? -1 : 1)));
+                           try {
+                              await toggleLike(item.id);
+                           } catch {
+                              setLikesCount((prev) => Math.max(0, prev + (currentlyLiked ? 1 : -1)));
+                              setFlash("Could not update like");
+                              setTimeout(() => setFlash(""), 2000);
+                           }
                         }}
                         className={cn(
                            "flex h-12 items-center gap-3 rounded-full border px-4 transition-all active:scale-95 shadow-sm md:px-6",
@@ -175,17 +179,17 @@ export default function ExperienceDetailClient() {
                         )}
                      >
                         <Heart className={cn("h-4 w-4", isLiked && "fill-rose-500")} />
-                        <span className="text-[10px] font-black uppercase tracking-widest">
-                           {likesCount} Likes
+                        <span className="text-[10px] font-black uppercase whitespace-nowrap tracking-wider">
+                           {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
                         </span>
                      </button>
                      <button
                         onClick={() => {
-                          if (!requireLogin()) return;
-                          void toggleSave(item.id).catch(() => {
-                            setFlash("Could not update save");
-                            setTimeout(() => setFlash(""), 2000);
-                          });
+                           if (!requireLogin()) return;
+                           void toggleSave(item.id).catch(() => {
+                              setFlash("Could not update save");
+                              setTimeout(() => setFlash(""), 2000);
+                           });
                         }}
                         className={cn(
                            "flex h-12 w-12 items-center justify-center rounded-full border transition-all active:scale-95 shadow-sm",
@@ -216,21 +220,31 @@ export default function ExperienceDetailClient() {
                   <div className="lg:col-span-4 space-y-8">
                      <div className="space-y-6 lg:sticky lg:top-28 lg:space-y-8">
                         {/* Summary Metrics */}
-                        <div className="space-y-6 rounded-[40px] border-2 border-black bg-white p-5 shadow-2xl md:space-y-8 md:p-8">
-                           <div className="space-y-6">
+                        <div className="space-y-4 rounded-[40px] border-2 border-black bg-white p-5 shadow-2xl md:space-y-6 md:p-8">
+                           <div className="space-y-4">
                               <div className="space-y-1.5 text-center md:text-left">
-                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Candidate Profile</p>
+                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Profile</p>
                                  <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
                                     <div className="h-14 w-14 rounded-2xl bg-black text-white flex items-center justify-center font-black text-2xl tracking-tighter shadow-lg">
                                        {item.author_name?.[0] || 'S'}
                                     </div>
-                                     <div className="space-y-0.5 text-left">
-                                        <h3 className="text-lg font-black text-black tracking-tight">{item.author_name || "Anonymous"}</h3>
-                                     </div>
-                                  </div>
-                               </div>
+                                    <div className="space-y-0.5 text-left">
+                                       <h3 className="text-lg font-black text-black tracking-tight">{item.author_name || "Anonymous"}</h3>
+                                       {item.linkedin_url && !item.anonymous && (
+                                          <a
+                                             href={item.linkedin_url}
+                                             target="_blank"
+                                             rel="noopener noreferrer"
+                                             className="text-[9px] font-black uppercase tracking-widest text-emerald-600 hover:text-emerald-700 transition-colors"
+                                          >
+                                             View LinkedIn Profile
+                                          </a>
+                                       )}
+                                    </div>
+                                 </div>
+                              </div>
 
-                              <div className="space-y-4 pt-6 border-t border-zinc-100">
+                              <div className="space-y-4 pt-4 border-t border-zinc-100">
                                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
                                     <span className="flex items-center gap-2 text-muted-foreground"><GraduationCap className="h-4 w-4 text-black" /> College</span>
                                     <span className="text-black text-right">{item.college || "Nexus"}</span>
@@ -239,21 +253,21 @@ export default function ExperienceDetailClient() {
                                     <span className="flex items-center gap-2 text-muted-foreground"><Layers className="h-4 w-4 text-black" /> Branch</span>
                                     <span className="text-black text-right">{item.branch}</span>
                                  </div>
-                                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
-                                    <span className="flex items-center gap-2 text-muted-foreground"><Timer className="h-4 w-4 text-black" /> Hiring Year</span>
-                                    <span className="text-black text-right">{item.hiring_year}</span>
-                                  </div>
-                                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest pt-2 border-t border-zinc-100/50">
-                                    <span className="flex items-center gap-2 text-muted-foreground"><ShieldCheck className="h-4 w-4 text-black" /> Process Progress</span>
+                                 <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
+                                    <span className="flex items-center gap-2 text-muted-foreground"><Timer className="h-4 w-4 text-black" /> Hiring Period</span>
+                                    <span className="text-black text-right">{item.month_label || item.hiring_year}</span>
+                                 </div>
+                                 <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
+                                    <span className="flex items-center gap-2 text-muted-foreground"><ShieldCheck className="h-4 w-4 text-black" /> Qualified</span>
                                     <span className="text-black text-right">{item.rounds_count} / {item.total_rounds || item.rounds_count} Rounds</span>
-                                  </div>
-                                </div>
+                                 </div>
+                              </div>
                            </div>
 
-                           <div className="space-y-4 rounded-[32px] border border-zinc-100 bg-zinc-50 p-5 md:p-6">
+                           <div className="space-y-4 rounded-[32px] border border-zinc-100 bg-zinc-50 p-5 md:p-6 border-t border-zinc-100/50">
                               <div className="flex items-center gap-3">
                                  <Timer className="h-5 w-5 text-black" />
-                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-black">Strategic Advice</h3>
+                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-black">TIPS</h3>
                               </div>
                               <p className="text-sm italic font-medium leading-relaxed text-muted-foreground opacity-80">
                                  &ldquo;{item.prep_tips}&rdquo;
@@ -264,8 +278,8 @@ export default function ExperienceDetailClient() {
                   </div>
 
                   {/* Right Column: Intelligence Narrative */}
-                  <div className="space-y-10 lg:col-span-8 lg:space-y-12">
-                     <section className="space-y-6">
+                  <div className="space-y-8 lg:col-span-8 lg:space-y-10">
+                     <section className="">
                         <div className="flex items-center gap-3">
                            <div className="h-10 w-10 rounded-2xl bg-black/5 flex items-center justify-center text-black">
                               <Building2 className="h-5 w-5" />
@@ -277,31 +291,31 @@ export default function ExperienceDetailClient() {
                         </p>
                      </section>
 
-                     <section className="space-y-8">
+                     <section className="space-y-2">
                         <div className="flex items-center gap-4">
                            <h2 className="text-xl font-black uppercase tracking-widest text-black md:text-2xl">Interview Rounds</h2>
                            <div className="flex-1 h-[1px] bg-black/5" />
                         </div>
 
-                        <div className="relative space-y-10 md:space-y-16">
+                        <div className="relative space-y-10 md:space-y-12 mt-2">
                            {item.rounds_detail?.map((round, idx) => (
                               <div key={idx} className="relative group">
                                  {/* Animated Timeline Element */}
                                  <div className="absolute -left-6 top-0 bottom-0 w-0.5 bg-zinc-100 group-hover:bg-black transition-colors" />
                                  <div className="absolute -left-[30px] top-1 h-3 w-3 rounded-full border-2 border-white bg-zinc-100 group-hover:bg-black transition-all group-hover:scale-125 shadow-sm" />
 
-                                 <div className="space-y-6 pl-6">
+                                 <div className="space-y-2 pl-6">
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                        <div className="space-y-1">
-                                          <h3 className="text-2xl font-black tracking-tighter text-black uppercase md:text-3xl">{round.title}</h3>
+                                          <h3 className="text-xl font-black tracking-tighter text-black uppercase">{round.title}</h3>
                                        </div>
-                                       <div className="flex items-center gap-2 rounded-full bg-zinc-50 border border-zinc-100 px-4 py-2 text-[10px] font-black uppercase tracking-widest">
+                                       <div className="flex items-center gap-2 rounded-full bg-zinc-50 border border-zinc-100 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest">
                                           <Clock className="h-4 w-4 text-black" />
                                           {round.duration}
                                        </div>
                                     </div>
 
-                                    <div className="rounded-[32px] border border-zinc-100 bg-white p-5 shadow-sm transition-all duration-500 group-hover:border-black group-hover:shadow-2xl md:p-8">
+                                    <div className="rounded-[32px] border border-zinc-100 bg-white p-5 shadow-sm transition-all duration-500 group-hover:border-black group-hover:shadow-2xl md:p-5">
                                        <p className="mb-6 text-sm font-medium leading-relaxed text-zinc-600 md:mb-8 md:text-base">
                                           {round.summary}
                                        </p>
@@ -326,8 +340,8 @@ export default function ExperienceDetailClient() {
                         </div>
                      </section>
 
-                     <section className="space-y-6">
-                        <h2 className="text-base font-black uppercase tracking-[0.3em] text-zinc-400">Topics</h2>
+                     <section className="space-y-2">
+                        <h2 className="text-xl font-black uppercase tracking-[0.3em] text-black">Topics</h2>
                         <div className="flex flex-wrap gap-3">
                            {item.topics?.map(t => (
                               <span key={t} className="rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black transition-all hover:border-black hover:shadow-xl md:px-6 md:py-3">

@@ -16,7 +16,15 @@ import {
   Calendar,
   Heart,
   Bookmark,
-  CheckCircle2
+  CheckCircle2,
+  Clock,
+  Wallet,
+  Globe,
+  ShieldCheck,
+  Flag,
+  Share2,
+  MapPin,
+  Briefcase
 } from "lucide-react";
 import { ExperienceSkeleton } from "@/components/skeleton";
 
@@ -38,6 +46,7 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+import { getRelativeTime } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ProfileClient() {
@@ -207,9 +216,9 @@ export default function ProfileClient() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-2 rounded-full bg-slate-100/50 p-1.5 self-center border border-slate-200">
+        <div className="flex items-center justify-center gap-2 rounded-full bg-slate-100/50 p-1 self-center border border-slate-200">
           {(["contributions", "saved"] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={cn("rounded-full px-8 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all", activeTab === tab ? "bg-white text-slate-900 shadow-xl border border-slate-100" : "text-slate-500 hover:text-slate-900")}>
+            <button key={tab} onClick={() => setActiveTab(tab)} className={cn("rounded-full px-8 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all", activeTab === tab ? "bg-white text-slate-900 border-2 border-slate-100" : "text-slate-500 hover:text-slate-900")}>
               {tab === "contributions" ? "Contributions" : "Saved Posts"}
             </button>
           ))}
@@ -217,7 +226,7 @@ export default function ProfileClient() {
 
         <div className="min-h-[400px]">
           <AnimatePresence mode="wait">
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="grid gap-6">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="grid gap-4">
               {activeTab === "contributions" ? (
                 sharedPosts.length === 0 ? (
                   <div className="frost flex flex-col items-center justify-center py-24 text-center rounded-[48px] border-2 border-dashed border-slate-200 bg-white/30">
@@ -393,64 +402,145 @@ type ExperienceCardProps = {
 function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage = false, cardError }: ExperienceCardProps) {
 
   const { liked, saved, toggleLike, toggleSave, profile } = useAuth();
-  const router = useRouter();
   const [likesCount, setLikesCount] = useState(item.likes_count ?? 0);
   const [actionBusy, setActionBusy] = useState(false);
+  const [flash, setFlash] = useState("");
 
   const authorDisplay = item.anonymous ? "Anonymous" : (isOwner ? (profile?.full_name || item.author_name || "Member") : (item.author_name || "Member"));
 
+  const copyExperienceLink = async (id: string) => {
+    const url = `${window.location.origin}/feed/${id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setFlash("Link copied");
+      setTimeout(() => setFlash(""), 2000);
+    } catch {
+      setFlash("Could not copy link");
+      setTimeout(() => setFlash(""), 2000);
+    }
+  };
+
   return (
-    <div className="frost relative flex flex-col gap-5 rounded-[40px] border border-black/5 bg-white/60 p-6 md:p-8 transition-all hover:border-black/10 hover:shadow-2xl">
-      <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[8px] font-black uppercase tracking-widest", item.selection_status === 'Selected' ? "bg-emerald-50 text-emerald-600 border border-emerald-500/10" : item.selection_status === 'Waitlisted' ? "bg-amber-50 text-amber-600 border border-amber-500/10" : "bg-rose-50 text-rose-600 border border-rose-500/10")}>{item.selection_status}</span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white">{item.opportunity_type}</span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 px-3 py-1 text-[8px] font-black uppercase tracking-widest">{item.recruitment_route}</span>
-            {item.sources && item.sources.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-500/10 px-3 py-1 text-[8px] font-black uppercase tracking-widest">Source: {item.sources.join(", ")}</span>
+    <div className="relative">
+      <Link
+        href={`/feed/${item.id}`}
+        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
+      >
+        {/* Header: Author Info */}
+        <div className="mb-2 flex flex-wrap items-center gap-2 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+          <div className="flex items-center gap-2 flex-wrap">
+            <User className="h-2.5 w-2.5 text-slate-900" />
+            <span>{authorDisplay}</span>
+            <span className="opacity-40">&middot;</span>
+            <GraduationCap className="h-2.5 w-2.5 text-slate-900" />
+            <span>{item.college}</span>
+            <span className="opacity-40">&middot;</span>
+            <Layers className="h-2.5 w-2.5 text-slate-900" />
+            <span>{item.branch}</span>
+          </div>
+
+          <div className="ml-auto flex items-center gap-4">
+            {isOwner && (
+              <Link
+                href={`/share?edit=${item.id}`}
+                className="flex items-center gap-1.5 transition-colors hover:text-slate-900"
+              >
+                <Edit3 className="h-3 w-3 text-slate-900" />
+                <span>Edit Post</span>
+              </Link>
+            )}
+            {isOwner && onDelete && (
+              <button
+                onClick={(e) => { e.preventDefault(); onDelete(); }}
+                className="flex items-center gap-1.5 transition-colors hover:text-rose-500"
+              >
+                <Trash2 className="h-3 w-3 text-rose-500" />
+                <span>Delete</span>
+              </button>
+            )}
+            {isSavedPage && onRemove && (
+              <button
+                onClick={(e) => { e.preventDefault(); onRemove(); }}
+                className="flex items-center gap-1.5 transition-colors hover:text-rose-500"
+              >
+                <Trash2 className="h-3 w-3 text-rose-500" />
+                <span>Remove</span>
+              </button>
             )}
           </div>
-          <div className="space-y-1">
-            <h3 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{item.company_name}</h3>
-            <p className="text-xs font-medium text-slate-500">{item.role_name} • {item.company_location}</p>
-          </div>
         </div>
-        {isOwner && onDelete && (
-          <button onClick={onDelete} className="absolute right-8 top-8 rounded-full bg-rose-50 p-2 text-rose-500 transition-all hover:bg-rose-500 hover:text-white active:scale-90"><Trash2 className="h-4 w-4" /></button>
-        )}
-        {isSavedPage && onRemove && (
-          <button onClick={onRemove} className="absolute right-8 top-8 rounded-full bg-slate-100 p-2 text-slate-500 transition-all hover:bg-slate-900 hover:text-white active:scale-90"><Bookmark className="h-4 w-4 fill-current" /></button>
-        )}
-      </div>
 
-      <p className="line-clamp-3 text-xs font-normal leading-relaxed text-slate-600">{item.overview}</p>
-
-      <div className="flex flex-wrap gap-2">
-        {item.topics?.slice(0, 3)?.map(t => (
-          <span key={t} className="rounded-lg bg-slate-100 px-3 py-1.5 text-[8px] font-black uppercase tracking-widest text-slate-600">
-            {t}
-          </span>
-        ))}
-        {item.topics && item.topics.length > 3 && (
-          <span className="rounded-lg bg-slate-100 px-3 py-1.5 text-[8px] font-black uppercase tracking-widest text-slate-400">
-            +{item.topics.length - 3} More
-          </span>
-        )}
-      </div>
-
-      <div className="flex flex-col items-start justify-between gap-4 border-t border-slate-200/50 pt-5 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-black text-[10px]">{authorDisplay[0]}</div>
+        {/* Row: Company & Outcome */}
+        <div className="mb-2 flex flex-col items-start justify-between gap-2 sm:flex-row sm:gap-4">
           <div className="space-y-0.5">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-900">{authorDisplay}</p>
-            <p className="text-[8px] font-bold uppercase tracking-widest text-slate-400">{item.college}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <Building2 className="h-4 w-4 text-slate-900 shrink-0" />
+              <h3 className="text-lg font-bold text-slate-900 tracking-tight sm:text-x1 md:text-2xl leading-none">{item.company_name}</h3>
+              <div className="ml-0 flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 sm:ml-2">
+                <MapPin className="h-3 w-3" /> {item.company_location}
+              </div>
+            </div>
+          </div>
+          <div className={cn(
+            "px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border shrink-0",
+            item.selection_status === 'Selected' ? 'text-emerald-500 border-emerald-500/10 bg-emerald-50/10' : item.selection_status === 'Waitlisted' ? 'text-amber-500 border-amber-500/10 bg-amber-50/10' : 'text-rose-500 border-rose-500/10 bg-rose-50/10'
+          )}>
+            {item.selection_status}
           </div>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <Link href={`/feed/${item.id}`} className="group/link inline-flex-1 flex items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-2.5 text-[9px] font-black uppercase tracking-widest text-white transition-all hover:bg-black active:scale-95 shadow-xl sm:w-auto">Deep Dive <ArrowUpRight className="h-3 w-3 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" /></Link>
-          <div className="flex items-center gap-4 border-l border-slate-200 pl-4">
+        {/* Details: Role / Type / Comp */}
+        <div className="flex flex-wrap items-center gap-4 mb-2.5">
+          <div className="flex items-center gap-2">
+            <Briefcase className="h-3.5 w-3.5 text-slate-900" />
+            <span className="text-xs font-semibold">{item.role_name}</span>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] text-muted-foreground font-normal uppercase tracking-widest font-black">
+            <Building2 className="h-3.5 w-3.5" />
+            {item.opportunity_type}
+            <span className="opacity-40">&middot;</span>
+            <ShieldCheck className="h-3.5 w-3.5" />
+            {item.recruitment_route}
+          </div>
+          {item.compensation && (
+            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+              <Wallet className="h-3.5 w-3.5" />
+              {item.compensation}
+            </div>
+          )}
+        </div>
+
+        {/* Metrics */}
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:gap-2.5">
+          <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3 sm:max-w-[140px]">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Process</p>
+            <p className="text-[11px] font-bold text-slate-900">{item.rounds_count || item.total_rounds || 0} Rounds</p>
+          </div>
+          <div className="max-w-full flex-1 rounded-2xl border border-slate-200 bg-white/65 p-1.5 px-3">
+            <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Topics</p>
+            <div className="flex flex-wrap gap-1">
+              {item.topics?.slice(0, 5).map(t => (
+                <span key={t} className="px-1.5 py-0.5 rounded-md bg-slate-900 text-white text-[9px] font-bold uppercase tracking-wider">
+                  {t}
+                </span>
+              ))}
+              {item.topics && item.topics.length > 5 && (
+                <span className="text-[9px] font-bold text-slate-400">+{item.topics.length - 5}</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Narrative Snippet */}
+        <div className="mb-1.5 space-y-1 border-t border-slate-100 pt-2.5">
+          <p className="text-xs font-normal text-slate-500 leading-relaxed line-clamp-1 italic opacity-80">
+            &ldquo;{item.overview || item.rounds_summary}&rdquo;
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-1 flex flex-col items-start justify-between gap-4 border-t border-slate-200/50 pt-3 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
             <button
               onClick={async (e) => {
                 e.preventDefault(); if (actionBusy) return;
@@ -458,20 +548,43 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
                 setLikesCount(p => Math.max(0, p + (curLiked ? -1 : 1))); setActionBusy(true);
                 try { await toggleLike(item.id); } catch { setLikesCount(p => Math.max(0, p + (curLiked ? 1 : -1))); } finally { setActionBusy(false); }
               }}
-              className={cn("flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest", liked.includes(item.id) ? "text-rose-500" : "text-slate-500")}
+              className={cn("flex items-center gap-1.5 transition-colors hover:text-rose-500", liked.includes(item.id) ? "text-rose-500" : "text-slate-500")}
             >
-              <Heart className={cn("h-3.5 w-3.5", liked.includes(item.id) && "fill-rose-500")} /> {likesCount}
+              <Heart className={cn("h-3 w-3", liked.includes(item.id) && "fill-current")} />
+              {likesCount} {likesCount === 1 ? 'Like' : 'Likes'}
             </button>
-            <button
-              onClick={async (e) => { e.preventDefault(); setActionBusy(true); try { await toggleSave(item.id); } finally { setActionBusy(false); } }}
-              className={cn("flex items-center text-slate-500", saved.includes(item.id) && "text-accent")}
-            >
-              <Bookmark className={cn("h-3.5 w-3.5", saved.includes(item.id) && "fill-current")} />
+
+            {isSavedPage ? (
+              <button
+                onClick={(e) => { e.preventDefault(); onRemove?.(); }}
+                className="flex items-center gap-1.5 transition-colors hover:text-rose-500 text-slate-500"
+              >
+                <Trash2 className="h-3 w-3" /> Remove Save
+              </button>
+            ) : (
+              <button
+                onClick={async (e) => { e.preventDefault(); setActionBusy(true); try { await toggleSave(item.id); } finally { setActionBusy(false); } }}
+                className={cn("flex items-center gap-1.5 transition-colors hover:text-slate-900", saved.includes(item.id) ? "text-slate-900" : "text-slate-500")}
+              >
+                <Bookmark className={cn("h-3 w-3", saved.includes(item.id) && "fill-current")} />
+                {saved.includes(item.id) ? "Saved" : "Save"}
+              </button>
+            )}
+
+            <button onClick={(e) => { e.preventDefault(); copyExperienceLink(item.id); }} className="flex items-center gap-1.5 transition-colors hover:text-slate-900">
+              <Share2 className="h-3 w-3" />
+              Share
             </button>
           </div>
+          <div className="flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-widest text-slate-400 sm:self-auto">
+            <Clock className="h-3 w-3" />
+            {getRelativeTime(item.created_at)}
+          </div>
         </div>
-      </div>
-      {cardError && <p className="mt-2 text-[8px] font-black uppercase tracking-widest text-rose-500">{cardError}</p>}
+      </Link>
+
+      {cardError && <p className="mt-2 text-[8px] font-black uppercase tracking-widest text-rose-500 px-6">{cardError}</p>}
+      {flash && <p className="fixed bottom-6 right-6 z-[110] rounded-full bg-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white shadow-xl">{flash}</p>}
     </div>
   );
 }

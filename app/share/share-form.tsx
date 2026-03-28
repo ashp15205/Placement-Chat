@@ -108,7 +108,7 @@ export function ShareForm() {
       const { data: exp } = await supabase
         .from("experiences")
         .select(
-          "id, user_id, company_name, company_location, role_name, opportunity_type, recruitment_route, compensation, branch, selection_status, month_label, hiring_year, rounds_detail, total_rounds, topics, sources, difficulty_label, overview, prep_tips",
+          "id, user_id, company_name, company_location, role_name, opportunity_type, recruitment_route, compensation, branch, selection_status, month_label, hiring_year, rounds_detail, total_rounds, topics, sources, difficulty_label, overview, prep_tips, anonymous",
         )
         .eq("id", editId)
         .eq("user_id", user.id)
@@ -148,6 +148,7 @@ export function ShareForm() {
       setDifficulty(exp.difficulty_label === "Easy" || exp.difficulty_label === "Hard" ? exp.difficulty_label : "Medium");
       setOverview(exp.overview || "");
       setTips(exp.prep_tips || "");
+      setAnonymous(!!exp.anonymous);
     };
     fetchExp();
   }, [editId, supabase, user]);

@@ -117,7 +117,7 @@ export function IntroAnimation() {
                 transition={{ duration: 2.2, repeat: Infinity, delay: 2.8 }}
                 className="mt-3 text-[11px] font-[1000] uppercase tracking-[0.7em] text-black"
               >
-                Synchronizing Protocol Layers...
+                Synchronizing Platform ...
               </motion.p>
             </div>
           </div>

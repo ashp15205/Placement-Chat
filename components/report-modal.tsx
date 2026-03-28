@@ -66,6 +66,8 @@ export function ReportModal({ isOpen, onClose, onConfirm }: ReportModalProps) {
                            placeholder="Spam, inappropriate content, or misleading details..."
                            className="w-full min-h-[120px] rounded-xl border-2 border-black bg-white px-4 py-3 text-xs font-bold outline-none focus:bg-black focus:text-white transition-all resize-none shadow-sm"
                            required
+                           minLength={5}
+                           maxLength={1000}
                         />
                      </div>
 

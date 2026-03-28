@@ -44,9 +44,21 @@ export async function upsertExperienceAction(payload: ExperienceDraft, editId?: 
     return { ok: false, message: "Session expired. Please sign in again." };
   }
 
+  // Fetch the user's linkedin_url from their profile if they are not posting anonymously
+  let linkedin_url: string | null = null;
+  if (!payload.anonymous) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("linkedin_url")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    linkedin_url = profile?.linkedin_url || null;
+  }
+
   const entry = {
     ...payload,
     user_id: user.id,
+    linkedin_url,
   };
 
   if (editId) {
@@ -62,9 +74,7 @@ export async function upsertExperienceAction(payload: ExperienceDraft, editId?: 
     return { ok: true, message: "Updated successfully." };
   }
 
-  const { error } = await supabase
-    .from("experiences")
-    .insert([entry]);
+  const { error } = await supabase.from("experiences").insert([entry]);
 
   if (error) {
     return { ok: false, message: error.message };
