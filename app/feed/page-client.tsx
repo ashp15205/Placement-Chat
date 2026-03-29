@@ -101,7 +101,7 @@ export function FeedClient() {
          // to prevent PostgREST filter injection via special characters
          const sanitized = filters.q.replace(/[%_\\\/]/g, "\\$&");
          query = query.or(
-            `company_name.ilike.%${sanitized}%,role_name.ilike.%${sanitized}%,college.ilike.%${sanitized}%`
+            `company_name.ilike.%${sanitized}%,role_name.ilike.%${sanitized}%,college.ilike.%${sanitized}%,company_location.ilike.%${sanitized}%`
          );
       }
       if (filters.branch) {
@@ -230,7 +230,7 @@ export function FeedClient() {
                   <input
                      value={q}
                      onChange={e => handleSearchChange(e.target.value)}
-                     placeholder="Search company, role, or college"
+                     placeholder="Search company, role, college or city"
                      className="soft-input w-full rounded-full pl-10 pr-4 py-3 text-xs font-normal transition-all h-[44px]"
                   />
                </div>
