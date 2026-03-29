@@ -307,15 +307,19 @@ export function FeedClient() {
                         className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
                      >
                         {/* Header: Author Info */}
-                        <div className="mb-2 flex flex-wrap items-center gap-2 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
-                           <User className="h-2.5 w-2.5 text-slate-900" />
-                           <span>{item.author_name || "Student"}</span>
-                           <span className="opacity-40">&middot;</span>
-                           <GraduationCap className="h-2.5 w-2.5 text-slate-900" />
-                           <span>{item.college}</span>
-                           <span className="opacity-40">&middot;</span>
-                           <Layers className="h-2.5 w-2.5 text-slate-900" />
-                           <span>{item.branch}</span>
+                        <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+                           <span className="flex items-center gap-1.5 shrink-0">
+                              <User className="h-2.5 w-2.5 text-slate-900" />
+                              <span>{item.author_name || "Student"}</span>
+                           </span>
+                           <span className="flex items-center gap-1.5 shrink-0">
+                              <GraduationCap className="h-2.5 w-2.5 text-slate-900" />
+                              <span>{item.college}</span>
+                           </span>
+                           <span className="flex items-center gap-1.5 shrink-0">
+                              <Layers className="h-2.5 w-2.5 text-slate-900" />
+                              <span>{item.branch}</span>
+                           </span>
                         </div>
 
                         {/* Row: Company & Outcome */}
