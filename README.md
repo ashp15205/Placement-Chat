@@ -44,39 +44,6 @@ Students often prepare for internships and placements using scattered, low-quali
 - **Lucide React** – Icons  
 
 
-## 🚀 Getting Started
-
-To run the development server locally:
-
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/ashp15205/Placement-Chat.git
-    ```
-2.  **Install Dependencies:**
-    ```bash
-    npm install
-    ```
-3.  **Setup Environment:**
-    Create a `.env` file with your **Supabase URL** and **Anon Key**.
-4.  **Run Dev Server:**
-    ```bash
-    npm run dev
-    ```
-
-## 📂 Project Structure
-
-- `web/app/` — Next.js App Router (pages and server actions)
-- `web/components/` — Reusable UI components (auth, animations, cards)
-- `web/lib/` — Business logic, Supabase client, and type definitions
-- `web/public/` — Static assets (icons, images)
-
-## 🛡️ Security & Verification
-
-Recent updates have fortified the platform's security:
-- **Google OAuth Verified**: Optimized for Google's Trust & Safety standards.
-- **Robust RLS**: 100% clean Row Level Security (RLS) policies ensuring users only manage their own data.
-- **Server-Side Auth**: Secure session management using Supabase SSR.
-
 ## 📄 License
 
 This project is licensed under the **MIT License**.  See [`LICENSE`](LICENSE) for details.
