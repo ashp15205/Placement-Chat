@@ -26,6 +26,7 @@ import {
    Wallet
 } from "lucide-react";
 import { ReportModal } from "@/components/report-modal";
+import { Toast, type ToastType } from "@/components/toast";
 
 const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
 
@@ -41,7 +42,11 @@ export default function ExperienceDetailClient() {
    const [copied, setCopied] = useState(false);
    const [isReporting, setIsReporting] = useState(false);
    const [loading, setLoading] = useState(true);
-   const [flash, setFlash] = useState("");
+   const [toast, setToast] = useState<{ message: string; type: ToastType; visible: boolean }>({
+      message: "",
+      type: "success",
+      visible: false,
+   });
    const [likesCount, setLikesCount] = useState(0);
 
    useEffect(() => {
@@ -65,14 +70,19 @@ export default function ExperienceDetailClient() {
 
    if (!isReady) return null;
 
+   const showFlash = (msg: string, type: ToastType = "success", durationMs = 3000) => {
+      setToast({ message: msg, type, visible: true });
+      setTimeout(() => setToast(prev => ({ ...prev, visible: false })), durationMs);
+   };
+
    const handleShare = async () => {
       try {
          await navigator.clipboard.writeText(window.location.href);
          setCopied(true);
+         showFlash("Link copied to clipboard", "success");
          setTimeout(() => setCopied(false), 2000);
       } catch {
-         setFlash("Could not copy link");
-         setTimeout(() => setFlash(""), 2000);
+         showFlash("Could not copy link", "error");
       }
    };
 
@@ -85,21 +95,20 @@ export default function ExperienceDetailClient() {
          });
          const data = (await response.json()) as { ok?: boolean; message?: string };
          if (!response.ok || !data.ok) {
-            setFlash(data.message || "Could not submit report");
+            showFlash(data.message || "Could not submit report", "error");
             return;
          }
-         setFlash("Report submitted");
+         showFlash("Report submitted successfully", "success");
       } catch {
-         setFlash("Could not submit report");
+         showFlash("Could not submit report", "error");
       }
-      setTimeout(() => setFlash(""), 2000);
    };
 
    if (!item && !loading) {
       return (
          <main className="mx-auto flex min-h-[60vh] w-full max-w-5xl flex-col items-center justify-center px-4 py-20">
             <HelpCircle className="h-10 w-10 text-muted-foreground mb-6" />
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Case Study Not Found.</h2>
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Post Not Found.</h2>
             <Link href="/feed" className="soft-pill mt-8 text-slate-900 rounded-full px-10 py-3.5 text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all shadow-xl">Return to Feed</Link>
          </main>
       );
@@ -169,8 +178,7 @@ export default function ExperienceDetailClient() {
                               await toggleLike(item.id);
                            } catch {
                               setLikesCount((prev) => Math.max(0, prev + (currentlyLiked ? 1 : -1)));
-                              setFlash("Could not update like");
-                              setTimeout(() => setFlash(""), 2000);
+                              showFlash("Could not update like", "error");
                            }
                         }}
                         className={cn(
@@ -187,8 +195,7 @@ export default function ExperienceDetailClient() {
                         onClick={() => {
                            if (!requireLogin()) return;
                            void toggleSave(item.id).catch(() => {
-                              setFlash("Could not update save");
-                              setTimeout(() => setFlash(""), 2000);
+                              showFlash("Could not update save", "error");
                            });
                         }}
                         className={cn(
@@ -364,7 +371,12 @@ export default function ExperienceDetailClient() {
                }}
             />
          )}
-         {flash ? <p className="fixed bottom-6 right-6 rounded-full bg-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white shadow-xl">{flash}</p> : null}
+         <Toast
+            message={toast.message}
+            type={toast.type}
+            isVisible={toast.visible}
+            onClose={() => setToast(prev => ({ ...prev, visible: false }))}
+         />
       </main>
    );
 }

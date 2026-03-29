@@ -21,6 +21,7 @@ import {
    Flag
 } from "lucide-react";
 import { ReportModal } from "@/components/report-modal";
+import { Toast, type ToastType } from "@/components/toast";
 
 import { getRelativeTime, cn } from "@/lib/utils";
 
@@ -67,7 +68,11 @@ export function FeedClient() {
    const [loading, setLoading] = useState(true);
    const [loadingMore, setLoadingMore] = useState(false);
    const [loadError, setLoadError] = useState("");
-   const [flash, setFlash] = useState("");
+   const [toast, setToast] = useState<{ message: string; type: ToastType; visible: boolean }>({
+      message: "",
+      type: "success",
+      visible: false,
+   });
    const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
    const PAGE_SIZE = 12;
@@ -87,10 +92,10 @@ export function FeedClient() {
       };
    }, []);
 
-   const showFlash = (msg: string, durationMs = 1800) => {
-      setFlash(msg);
+   const showFlash = (msg: string, type: ToastType = "success", durationMs = 3000) => {
+      setToast({ message: msg, type, visible: true });
       if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
-      flashTimerRef.current = setTimeout(() => setFlash(""), durationMs);
+      flashTimerRef.current = setTimeout(() => setToast(prev => ({ ...prev, visible: false })), durationMs);
    };
 
    const fetchItems = useCallback(async (p: number, filters: { q: string; branch: string; result: string }) => {
@@ -168,9 +173,9 @@ export function FeedClient() {
       const url = `${window.location.origin}/feed/${id}`;
       try {
          await navigator.clipboard.writeText(url);
-         showFlash("Link copied");
+         showFlash("Link copied to clipboard", "success");
       } catch {
-         showFlash("Could not copy link");
+         showFlash("Could not copy link", "error");
       }
    };
 
@@ -210,9 +215,9 @@ export function FeedClient() {
             showFlash(data.message || "Could not submit report");
             return;
          }
-         showFlash("Report submitted");
+         showFlash("Report submitted successfully", "success");
       } catch {
-         showFlash("Could not submit report");
+         showFlash("Could not submit report", "error");
       }
    };
 
@@ -460,7 +465,12 @@ export function FeedClient() {
                void submitReport(reportId, msg);
             }}
          />
-         {flash ? <p className="fixed bottom-6 right-6 rounded-full bg-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white shadow-xl">{flash}</p> : null}
+         <Toast
+            message={toast.message}
+            type={toast.type}
+            isVisible={toast.visible}
+            onClose={() => setToast(prev => ({ ...prev, visible: false }))}
+         />
       </main>
    );
 }

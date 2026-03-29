@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-provider";
 import { BRANCH_OPTIONS, type Experience, type Profile } from "@/lib/types";
@@ -41,6 +41,7 @@ import { twMerge } from "tailwind-merge";
 import { AutocompleteInput } from "@/components/autocomplete-input";
 import { useCommunityData } from "@/lib/use-community-data";
 import { deleteExperienceAction } from "@/app/profile/actions";
+import { Toast, type ToastType } from "@/components/toast";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,6 +69,18 @@ export default function ProfileClient() {
   const [deletePostConfirmText, setDeletePostConfirmText] = useState("");
   const [deletePostBusy, setDeletePostBusy] = useState(false);
   const [cardError, setCardError] = useState<Record<string, string>>({});
+  const [toast, setToast] = useState<{ message: string; type: ToastType; visible: boolean }>({
+     message: "",
+     type: "success",
+     visible: false,
+  });
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showFlash = (msg: string, type: ToastType = "success", durationMs = 3000) => {
+    setToast({ message: msg, type, visible: true });
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToast(prev => ({ ...prev, visible: false })), durationMs);
+  };
 
   const [editData, setEditData] = useState<{
     full_name: string;
@@ -236,7 +249,7 @@ export default function ProfileClient() {
                   </div>
                 ) : (
                   sharedPosts.map(item => (
-                    <ExperienceCard key={item.id} item={item} isOwner={true} cardError={cardError[item.id]} onDelete={() => setDeletePostTarget(item)} />
+                    <ExperienceCard key={item.id} item={item} isOwner={true} cardError={cardError[item.id]} onDelete={() => setDeletePostTarget(item)} onShowToast={showFlash} />
                   ))
                 )
               ) : (
@@ -252,6 +265,7 @@ export default function ProfileClient() {
                       key={item.id}
                       item={item}
                       isSavedPage={true}
+                      onShowToast={showFlash}
                       onRemove={async () => {
                         try {
                           await toggleSave(item.id);
@@ -267,6 +281,13 @@ export default function ProfileClient() {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          isVisible={toast.visible}
+          onClose={() => setToast(prev => ({ ...prev, visible: false }))}
+        />
 
         <div className="mt-12 mb-8 border-t border-slate-200 pt-12 flex flex-col items-center gap-6">
           <div className="text-center space-y-1">
@@ -399,12 +420,11 @@ type ExperienceCardProps = {
   cardError?: string;
 };
 
-function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage = false, cardError }: ExperienceCardProps) {
+function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage = false, cardError, onShowToast }: ExperienceCardProps & { onShowToast: (m: string, t: ToastType) => void }) {
 
   const { liked, saved, toggleLike, toggleSave, profile } = useAuth();
   const [likesCount, setLikesCount] = useState(item.likes_count ?? 0);
   const [actionBusy, setActionBusy] = useState(false);
-  const [flash, setFlash] = useState("");
 
   const authorDisplay = item.anonymous ? "Anonymous" : (isOwner ? (profile?.full_name || item.author_name || "Member") : (item.author_name || "Member"));
 
@@ -412,11 +432,9 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
     const url = `${window.location.origin}/feed/${id}`;
     try {
       await navigator.clipboard.writeText(url);
-      setFlash("Link copied");
-      setTimeout(() => setFlash(""), 2000);
+      onShowToast("Link copied to clipboard", "success");
     } catch {
-      setFlash("Could not copy link");
-      setTimeout(() => setFlash(""), 2000);
+      onShowToast("Could not copy link", "error");
     }
   };
 
@@ -588,7 +606,6 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
       </Link>
 
       {cardError && <p className="mt-2 text-[8px] font-black uppercase tracking-widest text-rose-500 px-6">{cardError}</p>}
-      {flash && <p className="fixed bottom-6 right-6 z-[110] rounded-full bg-slate-900 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white shadow-xl">{flash}</p>}
     </div>
   );
 }
