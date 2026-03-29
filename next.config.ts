@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'; " +
               "img-src 'self' data: blob: https:; " +
               "font-src 'self' data:; " +
-              "connect-src 'self' https://*.supabase.co https://*.supabase.com; " +
+              "connect-src 'self' https://*.supabase.co https://*.supabase.com https://formspree.io; " +
               "frame-ancestors 'none'; " +
               "base-uri 'self'; " +
               "form-action 'self';",

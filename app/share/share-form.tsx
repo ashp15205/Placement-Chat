@@ -431,7 +431,7 @@ export function ShareForm() {
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-2">{type === 'Internship' ? 'Stipend/month' : 'CTC'}</p>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-2">{type === 'Internship' ? 'Stipend/month (Optional)' : 'CTC (Optional)'}</p>
                   <input value={compensation} onChange={e => setCompensation(e.target.value)} placeholder={type === 'Internship' ? "eg: 40k/month" : "eg: 8/LPA "} className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all" />
                 </div>
               </div>

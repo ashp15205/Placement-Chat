@@ -32,6 +32,7 @@ function Logo({ className, variant = "default" }: { className?: string, variant?
 }
 
 import { LinkedInIcon, GithubIcon, StarIcon } from "@/components/icons";
+import { FeedbackModal } from "@/components/feedback-form";
 
 export function Navbar() {
   const { user, profile, requireLogin, logout, isReady } = useAuth();
@@ -253,6 +254,7 @@ export function Navbar() {
 
 export function Footer() {
   const [stars, setStars] = useState<number | null>(null);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   useEffect(() => {
     // Check localStorage cache first
@@ -284,6 +286,8 @@ export function Footer() {
   return (
     <footer className="relative z-10 w-full bg-transparent pb-3">
       <div className="mx-auto max-w-7xl px-6">
+        <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
+
         {/* Blending Separator Line */}
         <div className="mb-3 h-px w-full bg-gradient-to-r from-transparent via-slate-200/60 to-transparent" />
 
@@ -343,6 +347,13 @@ export function Footer() {
             <Link href="/privacy" className="hover:text-slate-900 transition-colors">Privacy Policy</Link>
             <span className="opacity-40">&middot;</span>
             <Link href="/terms" className="hover:text-slate-900 transition-colors">Terms of Service</Link>
+            <span className="opacity-40">&middot;</span>
+            <button 
+              onClick={() => setIsFeedbackOpen(true)}
+              className="hover:text-slate-900 transition-colors uppercase cursor-pointer"
+            >
+              Feedback
+            </button>
           </div>
         </div>
       </div>
