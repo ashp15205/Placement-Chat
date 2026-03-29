@@ -74,8 +74,8 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         body: JSON.stringify({
           rating,
           message,
-          userEmail: user.email,
-          userId: user.id,
+          userEmail: user?.email,
+          userId: user?.id,
           userName: profile?.full_name || profile?.display_name || "Anonymous",
         }),
       });
@@ -83,7 +83,9 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
       if (response.ok) {
         setStatus("success");
         // Set 24hr limit timestamp
-        localStorage.setItem(`last_feedback_${user.id}`, Date.now().toString());
+        if (user?.id) {
+          localStorage.setItem(`last_feedback_${user.id}`, Date.now().toString());
+        }
 
         setTimeout(() => {
           setStatus("idle");
