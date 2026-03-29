@@ -65,7 +65,7 @@ export default function LandingClient() {
         </h1>
         <p className="mx-auto mt-6 max-w-2xl px-4 text-sm text-slate-500 leading-relaxed sm:text-base">
           Placement Chat is a community-driven platform where engineering students share and
-          discover placement and internship interview experiences
+          discover placement and internship interview experiences <br /><b>Interview Stories: By Students, For Students</b>
         </p>
         <section className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
           <Link
@@ -141,7 +141,7 @@ export default function LandingClient() {
           </div>
           <p className="text-xs font-semibold text-slate-900 leading-tight">Insights directly from the source. 100% Student-first.</p>
           <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-            Students who gave the interviews<br /> Unfiltered, and strictly community-driven.
+            Students who gave the interviews. Unfiltered, and strictly community-driven.
           </p>
         </div>
       </section>

@@ -229,7 +229,7 @@ export function FeedClient() {
       <main className="mx-auto w-full max-w-4xl px-4 pt-8 pb-10 md:pt-12 md:pb-16 transition-all">
          <div className="frost-strong mb-2 rounded-[34px] p-6 text-left">
             <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Experiences</h1>
-            <p className="mt-2 text-base text-slate-500 font-normal">Directly shared by the students who took the interviews</p>
+            <p className="mt-2 text-base text-slate-500 font-normal">Interview Stories: By Students, For Students</p>
 
             <div className="mt-6 grid gap-3 md:flex md:items-center md:gap-3 md:flex-nowrap">
                <div className="relative w-full md:flex-[3] md:min-w-[200px]">
