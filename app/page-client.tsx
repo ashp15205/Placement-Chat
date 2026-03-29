@@ -59,15 +59,15 @@ export default function LandingClient() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-start px-4 text-center transition-all overflow-hidden py-12 md:pt-15">
-      <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-6">
+      <section className="frost-strong animate-in fade-in slide-in-from-bottom-4 duration-1000 rounded-[44px] px-8 py-12 sm:px-14 sm:py-8">
         <h1 className="text-balance text-3xl font-semibold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
           Placement Chat
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl px-4 text-[10px] font-medium text-slate-500 sm:px-12 sm:text-sm uppercase tracking-[0.16em]">
-          Placement Chat is the community-driven platform where engineering students <br />
-          share and discover placement and internship interview experiences.
+        <p className="mx-auto mt-6 max-w-2xl px-4 text-sm text-slate-500 leading-relaxed sm:text-base">
+          Placement Chat is a community-driven platform where engineering students share and
+          discover placement and internship interview experiences
         </p>
-        <section className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+        <section className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
           <Link
             href="/feed"
             className="soft-button w-full sm:w-auto rounded-full px-10 py-4 text-[10px] font-black uppercase tracking-[0.2em]"
