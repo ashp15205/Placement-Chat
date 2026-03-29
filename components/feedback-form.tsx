@@ -51,10 +51,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      requireLogin();
-      return;
-    }
+    if (!requireLogin()) return;
 
     if (!message.trim()) return;
 
@@ -204,7 +201,8 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                       disabled={status === "submitting" || status === "success"}
                     />
 
-                    {!user && (
+                    {/* Show overlay if NOT fully onboarded */}
+                    {(!user || !profile) && (
                       <div
                         className="absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center rounded-[28px] bg-white/90 backdrop-blur-[4px] transition-opacity hover:bg-white/70"
                         onClick={() => {
