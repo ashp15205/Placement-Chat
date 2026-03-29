@@ -269,7 +269,7 @@ export function FeedClient() {
             </div>
          </div>
 
-         <div className="grid gap-4">
+         <div className="grid gap-2">
             {loading ? (
                <>
                   <ExperienceSkeleton />
