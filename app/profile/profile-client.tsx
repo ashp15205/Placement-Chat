@@ -421,7 +421,7 @@ type ExperienceCardProps = {
 };
 
 function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage = false, cardError, onShowToast }: ExperienceCardProps & { onShowToast: (m: string, t: ToastType) => void }) {
-
+  const router = useRouter();
   const { liked, saved, toggleLike, toggleSave, profile } = useAuth();
   const [likesCount, setLikesCount] = useState(item.likes_count ?? 0);
   const [actionBusy, setActionBusy] = useState(false);
@@ -438,11 +438,19 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
     }
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent navigation if the user clicked an action button or link
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a')) return;
+    
+    router.push(`/feed/${item.id}`);
+  };
+
   return (
     <div className="relative">
-      <Link
-        href={`/feed/${item.id}`}
-        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
+      <div
+        onClick={handleCardClick}
+        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left cursor-pointer"
       >
         {/* Header: Author Info */}
         <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500 overflow-hidden">
@@ -603,7 +611,7 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
             {getRelativeTime(item.created_at)}
           </div>
         </div>
-      </Link>
+      </div>
 
       {cardError && <p className="mt-2 text-[8px] font-black uppercase tracking-widest text-rose-500 px-6">{cardError}</p>}
     </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-provider";
 import { BRANCH_OPTIONS, type Experience } from "@/lib/types";
 import {
@@ -52,6 +53,7 @@ const FEED_COLUMNS =
    "id,author_name,college,company_name,company_location,role_name,opportunity_type,recruitment_route,compensation,branch,hiring_year,selection_status,difficulty_score,difficulty_label,rounds_count,total_rounds,topics,sources,overview,rounds_summary,likes_count,created_at" as const;
 
 export function FeedClient() {
+   const router = useRouter();
    const { liked, saved, toggleLike, toggleSave, isReady, requireLogin } = useAuth();
    const supabase = useMemo(() => createClient(), []);
    const [all, setAll] = useState<Experience[]>([]);
@@ -306,10 +308,15 @@ export function FeedClient() {
             ) : (
                <>
                   {list.map((item) => (
-                     <Link
+                     <div
                         key={item.id}
-                        href={`/feed/${item.id}`}
-                        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left"
+                        onClick={(e) => {
+                           // Prevent navigation if an action button was clicked
+                           const target = e.target as HTMLElement;
+                           if (target.closest('button')) return;
+                           router.push(`/feed/${item.id}`);
+                        }}
+                        className="frost elevate group block border p-4 sm:p-5 rounded-[24px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left cursor-pointer"
                      >
                         {/* Header: Author Info */}
                         <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
@@ -436,7 +443,7 @@ export function FeedClient() {
                               {getRelativeTime(item.created_at)}
                            </div>
                         </div>
-                     </Link>
+                     </div>
                   ))}
 
                   {hasMore && !loading && (
