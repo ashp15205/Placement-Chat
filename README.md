@@ -39,7 +39,11 @@ Students often prepare for internships and placements using scattered, low-quali
 - **React 19** – Modern UI architecture  
 - **Framer Motion** – Animations and transitions  
 - **Tailwind CSS 4** – Utility-first styling  
+<<<<<<< HEAD
 - **Supabase** – Auth + PostgreSQL
+=======
+- **Supabase** – Auth + PostgreSQL 
+>>>>>>> 7b1c4dcf600ad96dfc9ca11a4c56778015731f88
 - **Canvas API** – Cursor trail rendering  
 - **Lucide React** – Icons  
 
