@@ -51,7 +51,7 @@ const MONTH_OPTIONS = [
   "December",
 ] as const;
 const MIN_ROUNDS = 1;
-const MAX_ROUNDS = ;
+const MAX_ROUNDS = 12;
 
 const NEXT_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 };
 const PREV_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 4 };
