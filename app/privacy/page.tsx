@@ -32,6 +32,7 @@ export default function PrivacyPage() {
       points: [
         "To display your profile and shared experiences",
         "To enable community features (likes, saves)",
+        "Your Google profile name and email are used exclusively for account creation and session management",
         <span key="never-sell" className="font-bold text-slate-900">We never sell your data to anyone. Ever.</span>
       ]
     },

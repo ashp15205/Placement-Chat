@@ -76,7 +76,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           message,
           userEmail: user?.email,
           userId: user?.id,
-          userName: profile?.full_name || profile?.display_name || "Anonymous",
+          userName: profile?.full_name || profile?.display_name,
         }),
       });
 
