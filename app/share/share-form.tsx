@@ -51,7 +51,7 @@ const MONTH_OPTIONS = [
   "December",
 ] as const;
 const MIN_ROUNDS = 1;
-const MAX_ROUNDS = 20;
+const MAX_ROUNDS = ;
 
 const NEXT_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 };
 const PREV_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 4 };
@@ -79,7 +79,7 @@ export function ShareForm() {
   const [rounds, setRounds] = useState<RoundDraft[]>([
     { roundType: "Technical Interview", duration: "45 mins", summary: "", questions: [""] },
   ]);
-  const [totalRounds, setTotalRounds] = useState("3");
+  const [totalRounds, setTotalRounds] = useState("");
   const [topics, setTopics] = useState<string[]>([]);
   const [customTopic, setCustomTopic] = useState("");
   const [difficulty, setDifficulty] = useState<"Easy" | "Medium" | "Hard">("Medium");
@@ -91,7 +91,7 @@ export function ShareForm() {
   const editId = searchParams.get("edit");
   const parsedTotalRounds = useMemo(() => {
     const n = Number(totalRounds);
-    if (!Number.isFinite(n)) return 3;
+    if (!totalRounds || !Number.isFinite(n)) return MAX_ROUNDS;
     return Math.min(MAX_ROUNDS, Math.max(MIN_ROUNDS, Math.floor(n)));
   }, [totalRounds]);
   const maxRoundsAllowed = parsedTotalRounds;
@@ -195,6 +195,19 @@ export function ShareForm() {
         setMessage("Please fill Company, Location and Role (*)");
         return false;
       }
+      if (!totalRounds) {
+        setMessage("Please enter the total number of hiring rounds.");
+        return false;
+      }
+      const tr = Number(totalRounds);
+      if (tr < 1) {
+        setMessage("Total Hiring Rounds must be at least 1.");
+        return false;
+      }
+      if (tr > 9) {
+        setMessage("Maximum 9 rounds allowed. Please enter a proper number.");
+        return false;
+      }
     }
     if (s === 2) {
       if (rounds.length < 1) {
@@ -208,10 +221,6 @@ export function ShareForm() {
       const invalidRound = rounds.find(r => !r.roundType.trim() || !r.duration.trim() || !r.summary.trim());
       if (invalidRound) {
         setMessage("Please fill Title, Duration and Summary for all rounds (*)");
-        return false;
-      }
-      if (Number(totalRounds) < 1 || !totalRounds) {
-        setMessage("Total Process Rounds must be at least 1.");
         return false;
       }
     }
@@ -485,6 +494,19 @@ export function ShareForm() {
                   </select>
                 </div>
               </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-700 ml-1">Total Hiring Rounds *</p>
+                  <input
+                    type="number"
+                    value={totalRounds}
+                    onChange={(e) => setTotalRounds(e.target.value)}
+                    placeholder="e.g. 3"
+                    className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all"
+                  />
+                </div>
+              </div>
             </div>
           )}
 
@@ -499,32 +521,11 @@ export function ShareForm() {
 
               <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center px-1">
                 <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
-                  <div className="flex items-center gap-2 rounded-full border-2 border-slate-900 bg-white px-4 py-2 shadow-sm">
-                    <p className="text-[9.5px] font-black uppercase tracking-widest text-slate-800">Total Hiring Rounds:</p>
-                    <input
-                      type="number"
-                      min={1}
-                      max={MAX_ROUNDS}
-                      value={totalRounds}
-                      onChange={e => {
-                        const raw = e.target.value;
-                        if (raw === "" || Number.isFinite(Number(raw))) {
-                          setTotalRounds(raw);
-                        }
-                      }}
-                      className="w-10 bg-transparent text-[10px] font-black outline-none text-center"
-                      onBlur={() => {
-                        if (!totalRounds || Number(totalRounds) < 1) {
-                          setTotalRounds("1");
-                        }
-                      }}
-                    />
-                  </div>
                   <button type="button" onClick={addRound} disabled={rounds.length >= maxRoundsAllowed} className="flex items-center gap-2 soft-button rounded-full px-4 py-2 text-[9px] font-black uppercase tracking-widest text-white hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"> <Plus className="h-3 w-3" /> Add Round </button>
                 </div>
                 <div className="space-y-1">
                   <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 font-bold">
-                    You can add up to {maxRoundsAllowed} rounds.
+                    You can add up to {maxRoundsAllowed} rounds and click on add round to add rounds.
                   </p>
                 </div>
               </div>
