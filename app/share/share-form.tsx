@@ -51,7 +51,7 @@ const MONTH_OPTIONS = [
   "December",
 ] as const;
 const MIN_ROUNDS = 1;
-const MAX_ROUNDS = 12;
+const MAX_ROUNDS = 10;
 
 const NEXT_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 2, 2: 3, 3: 4, 4: 5, 5: 5 };
 const PREV_STEP: Record<1 | 2 | 3 | 4 | 5, 1 | 2 | 3 | 4 | 5> = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 4 };
@@ -204,8 +204,8 @@ export function ShareForm() {
         setMessage("Total Hiring Rounds must be at least 1.");
         return false;
       }
-      if (tr > 9) {
-        setMessage("Maximum 9 rounds allowed. Please enter a proper number.");
+      if (tr > 10) {
+        setMessage("Maximum 10 rounds allowed. Please enter a proper number.");
         return false;
       }
     }
@@ -505,6 +505,11 @@ export function ShareForm() {
                     placeholder="e.g. 3"
                     className="soft-input w-full rounded-xl px-4 py-3 text-xs font-bold outline-none transition-all"
                   />
+                  {totalRounds && Number(totalRounds) >= 7 && Number(totalRounds) <= 10 && (
+                    <p className="text-[8px] font-black uppercase tracking-widest text-amber-600 animate-in fade-in slide-in-from-top-1 ml-1 font-bold">
+                      That's a lot of rounds — are you sure?
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
