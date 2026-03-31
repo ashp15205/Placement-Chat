@@ -3,7 +3,6 @@
 import { useAuth } from "@/components/auth-provider";
 import { Navbar, Footer } from "@/components/site-chrome";
 import { PageLoader } from "@/components/page-loader";
-import { IntroAnimation } from "@/components/intro-animation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function RootShell({ children }: { children: React.ReactNode }) {
@@ -11,7 +10,6 @@ export function RootShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <IntroAnimation />
       <PageLoader />
       
       {/* Navbar fades in only after intro */}

@@ -59,13 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
-    if (pathname === "/") {
-      setIsIntroActive(true);
-      const timer = setTimeout(() => setIsIntroActive(false), 5000);
-      return () => clearTimeout(timer);
-    } else {
-      setIsIntroActive(false);
-    }
+    setIsIntroActive(false);
   }, [pathname]);
 
   const clearLocalAuthState = useCallback(() => {

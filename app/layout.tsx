@@ -53,7 +53,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { IntroAnimation } from "@/components/intro-animation";
 import { PageLoader } from "@/components/page-loader";
 import { RootShell } from "@/components/root-shell";
 
