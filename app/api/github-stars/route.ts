@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 3600; // cache for 1 hour
+export const revalidate = 300; // cache for 5 minutes
 
 export async function GET() {
   try {
@@ -10,7 +10,7 @@ export async function GET() {
         headers: {
           Accept: "application/vnd.github+json",
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: 300 },
       }
     );
 

@@ -1,7 +1,27 @@
-# Placement Chat 🚀
+<div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://placementchat.vercel.app/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  <h1>Placement Chat ✨</h1>
+  
+  <p>
+    <strong>Decode the Interview.</strong> <br/>
+    A fully transparent, open-source community platform for authentic engineering interview breakdowns.
+  </p>
+
+  <p align="center">
+    <a href="https://placementchat.vercel.app/">
+      <img src="https://img.shields.io/badge/Live_Project-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+    </a>
+    <a href="https://github.com/ashp15205/Placement-Chat/stargazers">
+      <img src="https://img.shields.io/github/stars/ashp15205/Placement-Chat?style=for-the-badge&color=ffdd00&logo=github&logoColor=black" alt="Stars" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img src="https://img.shields.io/badge/License-MIT-000000?style=for-the-badge" alt="License" />
+    </a>
+  </p>
+</div>
+
+---
+
 
 ## 📌 Problem Statement
 Walking into a campus placement or internship interview is inherently stressful, largely because students have no idea what to expect. While generic interview questions exist online, there is a massive lack of transparent, company-specific, and campus-specific interview data available—especially for non-CS engineering branches. This knowledge gap leaves many qualified students completely underprepared for high-stakes interviews.
@@ -23,8 +43,8 @@ I built **Placement Chat**, a completely free and fully public platform where st
 ## 🏆 Uniqueness
 Unlike generic company review sites or scattered WhatsApp messages, Placement Chat offers a hyper-focused, student-first user experience. 
 * **Zero Paywalls & No Ads:** The platform is entirely open-source and aggressively protects user data. 
-* **Premium UX/UI:** Utilizing smooth micro-animations, frosted glass effects, and dynamic transitions to provide an incredibly premium, Apple-inspired browsing environment that feels deeply satisfying to use.
-* **Public First:** The landing page instantly delivers immediate value and content to unauthenticated users, never hiding basic data behind a forced login wall.
+* **Public First:** The landing platform instantly delivers immediate value and content to unauthenticated users, never hiding basic data behind a forced login wall.
+* **Premium UX/UI:** Utilizing smooth micro-animations, frosted glass effects, and dynamic transitions to provide an incredibly premium, browsing environment that feels deeply satisfying to use.
 
 ## 🛠️ Tech Stack
 This project was constructed to prioritize high performance, secure data architecture, and top-tier aesthetic design.
