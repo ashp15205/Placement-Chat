@@ -50,6 +50,6 @@ Unlike generic company review sites or scattered WhatsApp messages, Placement Ch
 This project was constructed to prioritize high performance, secure data architecture, and top-tier aesthetic design.
 - **Framework:** [Next.js 14+ (App Router)](https://nextjs.org/)
 - **UI & Styling:** [Tailwind CSS](https://tailwindcss.com/) & [Framer Motion](https://www.framer.com/motion/)
-- **Database & Auth:** [Supabase](https://supabase.com/) (PostgreSQL & Verified Google OAuth)
+- **Database & Auth:** [Supabase](https://supabase.com/) 
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Hosting:** [Vercel](https://vercel.com/)
