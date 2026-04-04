@@ -40,8 +40,11 @@ I built **Placement Chat**, a completely free and fully public platform where st
 - **Round-by-Round Breakdowns:** Highly detailed step-by-step logs of technical tests, group discussions, and HR rounds.
 - **Actionable Data:** Explicit insights into actual questions asked, interview duration, and selection difficulty.
 - **Cross-Disciplinary Discovery:** Dedicated support for experiences across all engineering branches (CS, Civil, Mechanical, ECE, Chemical, etc.).
-- **Anonymous Posting:** Users can optionally post their experiences securely and anonymously to protect their identity.
+- **Community Board:** A centralized space for open discussions, preparation tips, and campus news with threaded replies and voting.
+- **Unified Profile Hub:** A comprehensive dashboard to manage your shared interview experiences, community threads, and saved intelligence in one place.
 - **Secure Authentication:** Fully verified Google OAuth flow providing a professional, lightning-fast onboarding experience.
+- **Anonymous Posting:** Optionally post experiences or community threads securely and anonymously to protect your identity.
+- **Cross-Disciplinary Discovery:** Dedicated support for experiences across all engineering branches (CS, Civil, Mechanical, ECE, Chemical, etc.).
 
 ## 🏆 Uniqueness
 Unlike generic company review sites or scattered WhatsApp messages, Placement Chat offers a hyper-focused, student-first user experience. 
