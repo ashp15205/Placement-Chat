@@ -70,3 +70,33 @@ export type Profile = {
   linkedin_url?: string;
   created_at: string;
 };
+
+export type CommunityPost = {
+  id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  is_anonymous: boolean;
+  likes_count: number;
+  comments_count: number;
+  created_at: string;
+  updated_at: string;
+  // Resolved on the client from profiles join or stripped for anonymous
+  author_name?: string | null;
+  author_college?: string | null;
+};
+
+export type CommunityComment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  is_anonymous: boolean;
+  parent_comment_id: string | null;
+  likes_count: number;
+  created_at: string;
+  // Resolved on the client
+  author_name?: string | null;
+  // Populated client-side by grouping
+  replies?: CommunityComment[];
+};

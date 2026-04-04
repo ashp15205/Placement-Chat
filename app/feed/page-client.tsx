@@ -19,7 +19,8 @@ import {
    Briefcase,
    ShieldCheck,
    Layers,
-   Flag
+   Flag,
+   PlusCircle
 } from "lucide-react";
 import { ReportModal } from "@/components/report-modal";
 import { Toast, type ToastType } from "@/components/toast";
@@ -227,11 +228,22 @@ export function FeedClient() {
 
    return (
       <main className="mx-auto w-full max-w-4xl px-4 pt-8 pb-10 md:pt-12 md:pb-16 transition-all">
-         <div className="frost-strong mb-2 rounded-[34px] p-6 text-left">
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Experiences</h1>
-            <p className="mt-2 text-base text-slate-500 font-normal">Interview Stories: By Students, For Students</p>
+         <div className="frost-strong pb-4 mb-2 rounded-[34px] p-6 text-left">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+               <div>
+                  <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-5xl">Experiences</h1>
+                  <p className="mt-2 text-base text-slate-500 font-normal">Interview Stories: By Students, For Students</p>
+               </div>
+               <Link
+                 href="/share"
+                 className="soft-button flex h-12 items-center gap-2 rounded-full px-6 text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shrink-0"
+               >
+                 <PlusCircle className="h-4 w-4" />
+                 Share Experience
+               </Link>
+            </div>
 
-            <div className="mt-6 grid gap-3 md:flex md:items-center md:gap-3 md:flex-nowrap">
+            <div className="mt-2 grid gap-3 md:flex md:items-center md:gap-3 md:flex-nowrap">
                <div className="relative w-full md:flex-[3] md:min-w-[200px]">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
                   <input

@@ -10,6 +10,18 @@ import {
   Trash2,
   Lock,
   Heart,
+  Building2,
+  MapPin,
+  Briefcase,
+  ShieldCheck,
+  Wallet,
+  User,
+  GraduationCap,
+  Layers,
+  Bookmark,
+  Share2,
+  Flag,
+  ArrowUpRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BRANCH_OPTIONS, type Experience } from "@/lib/types";
@@ -666,12 +678,120 @@ export function ShareForm() {
                 <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Review your experience before publishing.</p>
               </div>
 
-              <div className="frost w-full rounded-2xl border p-5 space-y-3">
-                <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Preview</p>
-                <h4 className="text-xl font-bold">{company} - {role}</h4>
-                <p className="text-xs text-muted-foreground">{branch} | {result} | {difficulty}</p>
-                <p className="text-xs font-medium line-clamp-3">{overview}</p>
-                <p className="text-[10px] text-muted-foreground">Rounds: {rounds.length} | Topics: {[...topics, customTopic.trim()].filter(Boolean).length}</p>
+              <div className="relative frost elevate group w-full rounded-[24px] border-2 border-slate-900/10 p-4 sm:p-5 text-left bg-white/50 text-slate-400 pointer-events-none select-none">
+                <div className="absolute top-2 right-4 rounded-full bg-slate-900 text-white px-2 py-0.5 text-[8px] font-black uppercase tracking-widest shadow-lg">Preview</div>
+
+                {/* Header: Author Info mockup */}
+                <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-b border-slate-200/50 pb-2 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+                   <span className="flex items-center gap-1.5 shrink-0 text-slate-700">
+                      <User className="h-2.5 w-2.5" />
+                      <span>{anonymous ? "Anonymous" : (profile?.full_name || profile?.display_name || "Student")}</span>
+                   </span>
+                   <span className="flex items-center gap-1.5 shrink-0">
+                      <GraduationCap className="h-2.5 w-2.5" />
+                      <span>{profile?.college_name || "College Here"}</span>
+                   </span>
+                   <span className="flex items-center gap-1.5 shrink-0">
+                      <Layers className="h-2.5 w-2.5" />
+                      <span>{branch || "CS"}</span>
+                   </span>
+                </div>
+
+                {/* Row: Company & Outcome */}
+                <div className="mb-2 flex flex-col items-start justify-between gap-2 sm:flex-row sm:gap-4 mt-3">
+                   <div className="space-y-0.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                         <Building2 className="h-4 w-4 text-slate-800 shrink-0" />
+                         <h3 className="text-lg font-bold text-slate-800 tracking-tight sm:text-x1 md:text-2xl leading-none">{company || "Company"}</h3>
+                         <div className="ml-0 flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 sm:ml-2">
+                            <MapPin className="h-3 w-3" /> {city || "Location"}
+                         </div>
+                      </div>
+                   </div>
+                   <div className={cn(
+                      "px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border shrink-0",
+                      result === 'Selected' ? 'text-emerald-600 border-emerald-500/20 bg-emerald-50/50' : result === 'Waitlisted' ? 'text-amber-600 border-amber-500/20 bg-amber-50/50' : 'text-rose-600 border-rose-500/20 bg-rose-50/50'
+                   )}>
+                      {result}
+                   </div>
+                </div>
+
+                {/* Details: Role / Type / Comp */}
+                <div className="flex flex-wrap items-center gap-4 mb-2.5">
+                   <div className="flex items-center gap-2 text-slate-700">
+                      <Briefcase className="h-3.5 w-3.5" />
+                      <span className="text-xs font-semibold">{role || "Role"}</span>
+                   </div>
+                   <div className="flex items-center gap-1 text-[11px] text-slate-500 font-normal uppercase tracking-widest font-black">
+                      <Building2 className="h-3.5 w-3.5" />
+                      {type}
+                      <span className="opacity-40">&middot;</span>
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      {access}
+                   </div>
+                   {compensation && (
+                      <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                         <Wallet className="h-3.5 w-3.5" />
+                         {compensation}
+                      </div>
+                   )}
+                </div>
+
+                {/* Metrics */}
+                <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:gap-2.5">
+                   <div className="w-fit rounded-2xl border border-slate-200/60 bg-white/40 p-1.5 px-3 sm:max-w-[140px]">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Process</p>
+                      <p className="text-[11px] font-bold text-slate-700">{rounds.length} / {parsedTotalRounds} Rounds</p>
+                   </div>
+                   <div className="w-fit rounded-2xl border border-slate-200/60 bg-white/40 p-1.5 px-3">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-0.5">Topics</p>
+                      <div className="flex flex-wrap gap-1">
+                         {[...topics, customTopic.trim()].filter(Boolean).length === 0 && <span className="text-[9px] text-slate-400 font-bold uppercase">None specified</span>}
+                         {[...topics, customTopic.trim()].filter(Boolean).slice(0,3).map(t => (
+                            <span key={t} className="px-1.5 py-0.5 rounded-md bg-slate-800 text-white text-[9px] font-bold uppercase tracking-wider">
+                               {t}
+                            </span>
+                         ))}
+                         {([...topics, customTopic.trim()].filter(Boolean).length > 3) && (
+                            <span className="px-1.5 py-0.5 rounded-md bg-slate-200 text-slate-600 text-[9px] font-bold uppercase tracking-wider">
+                               +{([...topics, customTopic.trim()].filter(Boolean).length - 3)}
+                            </span>
+                         )}
+                      </div>
+                   </div>
+                </div>
+
+                {/* Narrative Snippet */}
+                <div className="mb-1.5 space-y-1 border-t border-slate-200/50 pt-2.5 mt-4">
+                   <p className="text-xs font-normal text-slate-500 leading-relaxed line-clamp-1 italic opacity-80">
+                      &ldquo;{overview || "Detailed narrative of the interview experience..."}&rdquo;
+                   </p>
+                   <div className="flex justify-end items-center gap-1 text-[9px] font-black uppercase tracking-widest text-slate-300">
+                      Read Full Story <ArrowUpRight className="h-2.5 w-2.5" />
+                   </div>
+                </div>
+
+                {/* Footer mock */}
+                <div className="mt-1 flex flex-col items-start justify-between gap-4 border-t border-slate-200/50 pt-3 sm:flex-row sm:items-center">
+                   <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[8.5px] font-black uppercase tracking-widest text-slate-400">
+                      <span className="flex items-center gap-1.5">
+                         <Heart className="h-3 w-3" />
+                         0 Likes
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                         <Bookmark className="h-3 w-3" />
+                         Save
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                         <Share2 className="h-3 w-3" />
+                         Share
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                         <Flag className="h-3 w-3" />
+                         Report
+                      </span>
+                   </div>
+                </div>
               </div>
 
               <div className="grid gap-4 w-full max-w-md">

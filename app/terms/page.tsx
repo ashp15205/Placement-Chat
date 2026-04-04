@@ -18,18 +18,18 @@ export default function TermsPage() {
       title: "2. What You Can Do",
       icon: <Pencil className="h-4 w-4" />,
       points: [
-        "Browse all experiences freely without logging in",
-        "Share your genuine personal interview experiences",
-        "Like and save experiences from the community",
+        "Browse all experiences and threads freely without logging in",
+        "Share your interview experiences and ask community questions",
+        "Like, comment on, and save content from the community",
         "Post anonymously if you prefer privacy",
-        "Report any content you find inappropriate — we will review it and take necessary action"
+        "Report any content you find inappropriate — we will review it"
       ]
     },
     {
       title: "3. What You Cannot Do",
       icon: <Slash className="h-4 w-4" />,
       points: [
-        "Post fake or fabricated interview experiences",
+        "Post fake interview experiences or troll in discussion threads",
         "Impersonate another student or company",
         "Share confidential company information covered under NDA",
         "Spam, harass or abuse other users in any form",

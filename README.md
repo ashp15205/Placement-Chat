@@ -17,6 +17,9 @@
     <a href="https://opensource.org/licenses/MIT">
       <img src="https://img.shields.io/badge/License-MIT-000000?style=for-the-badge" alt="License" />
     </a>
+    <a href="https://buymeacoffee.com/ashishp05">
+      <img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
+    </a>
   </p>
 </div>
 

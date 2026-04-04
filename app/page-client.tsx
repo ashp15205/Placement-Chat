@@ -177,8 +177,7 @@ export default function LandingClient() {
             Placement Chat
           </h1>
           <p className="mx-auto mt-6 max-w-2xl px-4 text-sm text-slate-500 leading-relaxed sm:text-base">
-            Placement Chat is a community-driven platform where engineering students share and
-            discover placement and internship interview experiences <br /><b>Interview Stories: By Students, For Students</b>
+            Placement Chat is a community-driven platform where engineering students share interview experiences and engage in placement prep discussions <br /><b>Stories & Discussions: By Students, For Students</b>
           </p>
           <section className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
             <Link
@@ -249,13 +248,13 @@ export default function LandingClient() {
           <div className="frost group relative rounded-[32px] p-8 space-y-6 text-left border-transparent transition-all hover:bg-white/80">
             <div className="flex items-center gap-2">
               <div className="h-10 w-10 rounded-xl bg-slate-900 flex items-center justify-center text-white">
-                <User className="h-5 w-5" />
+                <Users className="h-5 w-5" />
               </div>
-              <h2 className="text-[12px] font-black uppercase tracking-[0.25em] text-slate-900">Student Centric</h2>
+              <h2 className="text-[12px] font-black uppercase tracking-[0.25em] text-slate-900">Community Board</h2>
             </div>
-            <p className="text-xs font-semibold text-slate-900 leading-tight">Insights directly from the source. 100% Student-first.</p>
+            <p className="text-xs font-semibold text-slate-900 leading-tight">Ask questions, reply, and engage directly with peers.</p>
             <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
-              Students who gave the interviews. Unfiltered, and strictly community-driven.
+              Jump into the discussion board. Get advice, clear doubts, and connect with students who just gave the interviews.
             </p>
           </div>
         </section>
@@ -278,7 +277,7 @@ export default function LandingClient() {
                   <h3 className="text-[11px] font-black uppercase tracking-[0.15em] text-slate-900">Purpose</h3>
                 </div>
                 <p>
-                  Placement Chat is a space where engineering students share their placement and internship interview experiences. You can browse detailed interview breakdowns and get practical tips directly from your seniors and peers to prepare for what lies ahead.
+                  Placement Chat is a space where engineering students share interview experiences and engage in placement discussions. Browse detailed breakdowns and get practical tips directly from your seniors in the community board.
                 </p>
               </div>
 
@@ -291,7 +290,7 @@ export default function LandingClient() {
                   <h3 className="text-[11px] font-black uppercase tracking-[0.15em] text-slate-900">How It Works</h3>
                 </div>
                 <p>
-                  The entire feed is open to browse — you don't even need an account to read experiences. You only have to sign in with your Google account when you want to share your own interview experience or save posts. It's built for students, by students.
+                  The feed and community board are open to browse — you don't even need an account. You only have to sign in with your Google account when you want to share an experience, start a discussion thread, reply, or save posts.
                 </p>
               </div>
 

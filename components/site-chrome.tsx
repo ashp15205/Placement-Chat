@@ -10,6 +10,8 @@ import {
   LogOut,
   LayoutGrid,
   PlusCircle,
+  MessageCircle,
+  Coffee,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
@@ -49,6 +51,7 @@ export function Navbar() {
 
   const navLinks = [
     { name: "Feed", href: "/feed", icon: LayoutGrid },
+    { name: "Community", href: "/community", icon: MessageCircle },
     { name: "Share", href: "/share", icon: PlusCircle, onClick: handleShareClick },
   ];
 
@@ -302,25 +305,50 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Middle: Star the repo (Real-time Custom Badge) */}
-          <div className="flex w-full items-center justify-center md:w-1/3">
-            <a
+          {/* Middle: Star the repo and BMAC */}
+          <div className="flex w-full items-center justify-center gap-2 md:w-1/3">
+            <motion.a
               href="https://github.com/ashp15205/Placement-Chat"
               target="_blank"
               rel="noreferrer"
-              className="group flex flex-col items-center gap-2 transition-all hover:scale-105 active:scale-95"
+              whileHover={{ scale: 1.05 }}
+              className="active:scale-95"
             >
-              <div className="flex h-7 items-center overflow-hidden rounded-[6px] bg-slate-900 px-3 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10 group-hover:bg-black transition-colors">
-                <div className="mr-2 flex items-center gap-2">
-                  <GithubIcon className="h-4 w-4" />
+              <div className="flex h-7 w-[114px] justify-between items-center rounded-[6px] bg-slate-900 hover:bg-black transition-colors px-2.5 text-[10px] font-black uppercase tracking-widest text-white shadow-sm ring-1 ring-inset ring-white/10">
+                <div className="flex items-center gap-1.5">
+                  <GithubIcon className="h-3.5 w-3.5" />
                   <span>GitHub</span>
                 </div>
-                <div className="flex items-center gap-1.5 pl-1">
+                <div className="flex items-center gap-1">
                   <span>{stars !== null ? stars : "—"}</span>
-                  <StarIcon className="h-3 w-3 fill-black text-white" />
+                  <StarIcon className="h-2.5 w-2.5 text-white" />
                 </div>
               </div>
-            </a>
+            </motion.a>
+
+            <motion.a
+              href="https://buymeacoffee.com/ashishp05"
+              target="_blank"
+              rel="noreferrer"
+              whileHover="hover"
+              className="active:scale-95"
+            >
+              <motion.div
+                variants={{ hover: { scale: 1.05 } }}
+                className="flex h-7 w-[114px] justify-center items-center rounded-[6px] bg-[#FFDD00] hover:bg-[#FFEA4D] transition-colors px-2.5 text-[10px] font-black uppercase tracking-widest text-black shadow-sm ring-1 ring-inset ring-black/5"
+              >
+                <div className="flex items-center gap-1.5">
+                  <motion.div
+                    variants={{
+                      hover: { rotate: [0, -20, 20, -20, 20, 0], transition: { duration: 0.6 } }
+                    }}
+                  >
+                    <Coffee className="h-3.5 w-3.5" strokeWidth={2.5} />
+                  </motion.div>
+                  <span>Buy Coffee</span>
+                </div>
+              </motion.div>
+            </motion.a>
           </div>
 
           {/* Right: Credits */}
@@ -348,7 +376,7 @@ export function Footer() {
             <span className="opacity-40">&middot;</span>
             <Link href="/terms" className="hover:text-slate-900 transition-colors">Terms of Service</Link>
             <span className="opacity-40">&middot;</span>
-            <button 
+            <button
               onClick={() => setIsFeedbackOpen(true)}
               className="hover:text-slate-900 transition-colors uppercase cursor-pointer"
             >

@@ -12,8 +12,8 @@ export default function PrivacyPage() {
         "Name and email (via Google OAuth)",
         "College, branch, graduation year (from onboarding)",
         "LinkedIn URL (only if you choose to provide it)",
-        "Interview experiences you choose to share",
-        "Likes and saves activity"
+        "Experiences and community threads you choose to share",
+        "Likes, comments, and saves activity"
       ]
     },
     {
@@ -40,8 +40,8 @@ export default function PrivacyPage() {
       title: "4. Anonymous Posts",
       icon: <EyeOff className="h-4 w-4" />,
       points: [
-        "If you post anonymously, your name is completely hidden from all other users",
-        "Your identity is stored internally only to enable account management",
+        "If you post anonymously (in feed or community), your name is fully hidden",
+        "Your identity is stored internally only to enable account moderation",
         "It is never shown publicly under any circumstance"
       ]
     },
