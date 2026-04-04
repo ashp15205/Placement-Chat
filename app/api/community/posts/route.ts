@@ -15,24 +15,38 @@ export async function GET(request: Request) {
   // Sanitize search: strip characters that could break Supabase's filter parser (commas, parens, etc.)
   const sanitizedSearch = search.replace(/[(),]/g, " ").trim();
 
-  // Fetch posts with author profiles joined for broad search
-  // Note: we use profiles!inner() if we want to filter by them, but we want to allow all posts
-  // So we'll use a slightly more complex query approach for the search.
-  let query = supabase.from("community_posts").select(`
-    *,
-    profiles (
-      full_name,
-      display_name,
-      college_name
-    )
-  `);
+  // 1. Fetch matching user IDs from profiles if we have a search
+  let authorIdsMatchingSearch: string[] = [];
+  if (sanitizedSearch) {
+    const escaped = sanitizedSearch.replace(/%/g, "\\%");
+    const { data: matchedProfiles } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .or(`full_name.ilike.%${escaped}%,display_name.ilike.%${escaped}%,college_name.ilike.%${escaped}%`);
+    
+    if (matchedProfiles) {
+      authorIdsMatchingSearch = matchedProfiles.map(p => p.user_id);
+    }
+  }
+
+  // 2. Build the main query for posts
+  let query = supabase.from("community_posts").select("*");
 
   if (sanitizedSearch) {
     const escaped = sanitizedSearch.replace(/%/g, "\\%");
-    // Search in title, content, and the joined profile fields
-    query = query.or(
-      `title.ilike.%${escaped}%,content.ilike.%${escaped}%,profiles.college_name.ilike.%${escaped}%,profiles.full_name.ilike.%${escaped}%`
-    );
+    // Part 1: title or content matches
+    let orFilter = `title.ilike.%${escaped}%,content.ilike.%${escaped}%`;
+    
+    // Part 2: author matches (but only for non-anonymous posts)
+    if (authorIdsMatchingSearch.length > 0) {
+      // PostgREST "in" filter format: user_id.in.(uuid1,uuid2)
+      // We also check is_anonymous to ensure we don't accidentally link identity here if not intended
+      // But since we are searching by profile name, we only want to show non-anon posts of that user
+      const idList = authorIdsMatchingSearch.join(",");
+      orFilter += `,and(user_id.in.(${idList}),is_anonymous.eq.false)`;
+    }
+    
+    query = query.or(orFilter);
   }
 
   const orderCol = sort === "popular" ? "likes_count" : "created_at";
@@ -46,23 +60,47 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false, message: "Could not load community." }, { status: 500 });
   }
 
+  // 3. Fetch profiles for the returned posts to display names/colleges
+  const userIds = [
+    ...new Set(
+      (posts || [])
+        .filter((p) => !p.is_anonymous)
+        .map((p) => p.user_id)
+    ),
+  ];
+
+  let profileMap: Record<string, { full_name: string | null; college_name: string | null }> = {};
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("user_id, full_name, display_name, college_name")
+      .in("user_id", userIds);
+
+    if (profiles) {
+      for (const p of profiles) {
+        profileMap[p.user_id] = {
+          full_name: p.full_name || p.display_name || null,
+          college_name: p.college_name || null,
+        };
+      }
+    }
+  }
+
   // Merge author info, stripping identity for anonymous posts
-  const enriched = (posts || []).map((post: any) => {
-    const profile = post.profiles;
+  const enriched = (posts || []).map((post) => {
     if (post.is_anonymous) {
       return {
         ...post,
         user_id: "anonymous",
         author_name: null,
         author_college: null,
-        profiles: undefined // strip local profile object
       };
     }
+    const profile = profileMap[post.user_id];
     return {
       ...post,
-      author_name: profile?.full_name || profile?.display_name || null,
+      author_name: profile?.full_name || null,
       author_college: profile?.college_name || null,
-      profiles: undefined // strip local profile object
     };
   });
 
