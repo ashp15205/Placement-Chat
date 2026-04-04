@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-provider";
-import { BRANCH_OPTIONS, type Experience, type Profile } from "@/lib/types";
+import { BRANCH_OPTIONS, type Experience, type Profile, type CommunityPost } from "@/lib/types";
 import {
   User,
   Trash2,
@@ -24,7 +24,10 @@ import {
   Flag,
   Share2,
   MapPin,
-  Briefcase
+  Briefcase,
+  Sparkles,
+  Ghost,
+  MessageCircle
 } from "lucide-react";
 import { ExperienceSkeleton } from "@/components/skeleton";
 
@@ -54,7 +57,7 @@ export default function ProfileClient() {
   const { user, profile, saved, toggleLike, toggleSave, updateProfile, deleteAccount, logout } = useAuth();
   const community = useCommunityData();
   const supabase = useMemo(() => createClient(), []);
-  const [activeTab, setActiveTab] = useState<"contributions" | "saved">("contributions");
+  const [activeTab, setActiveTab] = useState<"contributions" | "saved posts" | "threads" | "saved_threads">("contributions");
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [profileError, setProfileError] = useState("");
@@ -70,9 +73,9 @@ export default function ProfileClient() {
   const [deletePostBusy, setDeletePostBusy] = useState(false);
   const [cardError, setCardError] = useState<Record<string, string>>({});
   const [toast, setToast] = useState<{ message: string; type: ToastType; visible: boolean }>({
-     message: "",
-     type: "success",
-     visible: false,
+    message: "",
+    type: "success",
+    visible: false,
   });
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -98,6 +101,10 @@ export default function ProfileClient() {
 
   const [sharedPosts, setSharedPosts] = useState<Experience[]>([]);
   const [savedPosts, setSavedPosts] = useState<Experience[]>([]);
+  const [myThreads, setMyThreads] = useState<CommunityPost[]>([]);
+  const [savedThreads, setSavedThreads] = useState<CommunityPost[]>([]);
+  const [communityLiked, setCommunityLiked] = useState<Set<string>>(new Set());
+  const [communitySaved, setCommunitySaved] = useState<Set<string>>(new Set());
 
   const profileName = profile?.full_name || profile?.display_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
   const profileAvatarLetter = (
@@ -138,6 +145,34 @@ export default function ProfileClient() {
         if (savedExps) setSavedPosts(savedExps as Experience[]);
       } else {
         setSavedPosts([]);
+      }
+
+      // Community threads
+      const { data: threadsData } = await supabase
+        .from("community_posts")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (threadsData) setMyThreads(threadsData as CommunityPost[]);
+
+      const [{ data: communityLikesData }, { data: communitySavesData }] = await Promise.all([
+        supabase.from("community_likes").select("post_id").eq("user_id", user.id),
+        supabase.from("community_saves").select("post_id").eq("user_id", user.id)
+      ]);
+
+      const cl = new Set<string>();
+      if (communityLikesData) communityLikesData.forEach(l => cl.add(l.post_id));
+      setCommunityLiked(cl);
+
+      const cs = new Set<string>();
+      if (communitySavesData) communitySavesData.forEach(s => cs.add(s.post_id));
+      setCommunitySaved(cs);
+
+      if (cs.size > 0) {
+        const { data: sThreadsData } = await supabase.from("community_posts").select("*").in("id", Array.from(cs));
+        if (sThreadsData) setSavedThreads(sThreadsData as CommunityPost[]);
+      } else {
+        setSavedThreads([]);
       }
     };
     fetchProfileData();
@@ -229,10 +264,10 @@ export default function ProfileClient() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-2 rounded-full bg-slate-100/50 p-1 self-center border border-slate-200">
-          {(["contributions", "saved"] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={cn("rounded-full px-8 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all", activeTab === tab ? "bg-white text-slate-900 border-2 border-slate-100" : "text-slate-500 hover:text-slate-900")}>
-              {tab === "contributions" ? "Contributions" : "Saved Posts"}
+        <div className="flex flex-wrap items-center justify-center gap-2 rounded-[24px] bg-slate-100/50 p-1 self-center border border-slate-200">
+          {(["contributions", "saved posts", "threads", "saved_threads"] as const).map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={cn("rounded-full px-5 sm:px-8 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all", activeTab === tab ? "bg-white text-slate-900 shadow-sm border border-slate-200/50" : "text-slate-500 hover:text-slate-900")}>
+              {tab === "contributions" ? "Experiences" : tab === "saved posts" ? "Saved EXPs" : tab === "threads" ? "My Threads" : "Saved Threads"}
             </button>
           ))}
         </div>
@@ -252,7 +287,7 @@ export default function ProfileClient() {
                     <ExperienceCard key={item.id} item={item} isOwner={true} cardError={cardError[item.id]} onDelete={() => setDeletePostTarget(item)} onShowToast={showFlash} />
                   ))
                 )
-              ) : (
+              ) : activeTab === "saved posts" ? (
                 savedPosts.length === 0 ? (
                   <div className="frost flex flex-col items-center justify-center py-24 text-center rounded-[48px] border-2 border-dashed border-slate-200 bg-white/30">
                     <Bookmark className="mb-4 h-12 w-12 text-slate-200" />
@@ -275,6 +310,37 @@ export default function ProfileClient() {
                         }
                       }}
                     />
+                  ))
+                )
+              ) : activeTab === "threads" ? (
+                myThreads.length === 0 ? (
+                  <div className="frost flex flex-col items-center justify-center py-24 text-center rounded-[48px] border-2 border-dashed border-slate-200 bg-white/30">
+                    <MessageCircle className="mb-4 h-12 w-12 text-slate-300" />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No discussions yet</p>
+                    <Link href="/community" className="mt-6 text-sm font-bold text-slate-900 hover:underline">Start a Thread &rarr;</Link>
+                  </div>
+                ) : (
+                  myThreads.map(item => (
+                    <ThreadCard key={item.id} post={item} isOwner={true} onDelete={async () => {
+                      const { error } = await supabase.from("community_posts").delete().eq("id", item.id);
+                      if (error) showFlash(error.message, "error");
+                      else { setMyThreads(p => p.filter(x => x.id !== item.id)); showFlash("Thread deleted", "success"); }
+                    }} />
+                  ))
+                )
+              ) : (
+                savedThreads.length === 0 ? (
+                  <div className="frost flex flex-col items-center justify-center py-24 text-center rounded-[48px] border-2 border-dashed border-slate-200 bg-white/30">
+                    <Bookmark className="mb-4 h-12 w-12 text-slate-300" />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No saved threads</p>
+                    <Link href="/community" className="mt-6 text-sm font-bold text-slate-900 hover:underline">Explore Discussions &rarr;</Link>
+                  </div>
+                ) : (
+                  savedThreads.map(item => (
+                    <ThreadCard key={item.id} post={item} isOwner={false} onRemove={async () => {
+                      await fetch(`/api/community/posts/${item.id}/save`, { method: "POST" });
+                      setSavedThreads(p => p.filter(x => x.id !== item.id));
+                    }} isSavedPage={true} />
                   ))
                 )
               )}
@@ -442,7 +508,7 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
     // Prevent navigation if the user clicked an action button or link
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a')) return;
-    
+
     router.push(`/feed/${item.id}`);
   };
 
@@ -615,5 +681,73 @@ function ExperienceCard({ item, onDelete, onRemove, isOwner = false, isSavedPage
 
       {cardError && <p className="mt-2 text-[8px] font-black uppercase tracking-widest text-rose-500 px-6">{cardError}</p>}
     </div>
+  );
+}
+
+// ----------------
+
+function ThreadCard({ post, isOwner, onDelete, isSavedPage, onRemove }: { post: CommunityPost, isOwner?: boolean, onDelete?: () => void, isSavedPage?: boolean, onRemove?: () => void }) {
+  const router = useRouter();
+  const { profile } = useAuth();
+  const [likesCount, setLikesCount] = useState(post.likes_count ?? 0);
+  const [liked, setLiked] = useState(false);  // Simplification for profile view
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("button")) return;
+    router.push(`/community/${post.id}`);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="frost elevate group block border p-5 rounded-[34px] transition-all duration-300 active:scale-[0.99] hover:bg-white/70 text-left cursor-pointer"
+      onClick={handleCardClick}
+    >
+      <div className="mb-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+        <span className="flex items-center gap-1.5 shrink-0">
+          {post.is_anonymous ? (
+            <><Ghost className="h-2.5 w-2.5 text-violet-500" /><span className="text-violet-500">Anonymous</span></>
+          ) : (
+            <><User className="h-2.5 w-2.5 text-slate-900" /><span>{isOwner ? (profile?.full_name || profile?.display_name || "Me") : (post.author_name || "Student")}</span></>
+          )}
+        </span>
+        <span className="flex items-center gap-1.5 shrink-0 ml-auto">
+          <Clock className="h-2.5 w-2.5" />
+          <span>{getRelativeTime(post.created_at)}</span>
+        </span>
+      </div>
+
+      <h3 className="text-lg font-bold text-slate-900 tracking-tight leading-snug mb-1.5 sm:text-xl line-clamp-2">
+        {post.title}
+      </h3>
+      <p className="text-xs text-slate-500 font-normal leading-relaxed line-clamp-2 mb-3">
+        {post.content}
+      </p>
+
+      <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-1 text-[8.5px] font-black uppercase tracking-widest text-slate-500">
+        <button onClick={async (e) => { e.preventDefault(); setLiked(!liked); setLikesCount(p => liked ? p - 1 : p + 1); await fetch(`/api/community/posts/${post.id}/like`, { method: "POST" }); }} className={cn("flex items-center gap-1.5 transition-colors", liked ? "text-rose-500" : "hover:text-rose-500")}>
+          <Heart className={cn("h-3 w-3", liked && "fill-current")} />
+          {likesCount} {likesCount === 1 ? "Like" : "Likes"}
+        </button>
+        <button onClick={() => router.push(`/community/${post.id}`)} className="flex items-center gap-1.5 transition-colors hover:text-slate-900">
+          <MessageCircle className="h-3 w-3" />
+          {post.comments_count} {post.comments_count === 1 ? "Comment" : "Comments"}
+        </button>
+
+        {isOwner && onDelete && (
+          <button onClick={(e) => { e.preventDefault(); onDelete(); }} className="flex items-center gap-1.5 transition-colors text-rose-500 ml-auto sm:ml-0">
+            <Trash2 className="h-3 w-3" /> Delete Thread
+          </button>
+        )}
+
+        {isSavedPage && onRemove && (
+          <button onClick={(e) => { e.preventDefault(); onRemove(); }} className="flex items-center gap-1.5 transition-colors text-rose-500 ml-auto sm:ml-0">
+            <Trash2 className="h-3 w-3" /> Remove Save
+          </button>
+        )}
+      </div>
+    </motion.div>
   );
 }
