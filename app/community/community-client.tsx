@@ -67,12 +67,27 @@ export function CommunityClient() {
     visible: false,
   });
   const flashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showFlash = (msg: string, type: ToastType = "success", durationMs = 3000) => {
     setToast({ message: msg, type, visible: true });
     if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     flashTimerRef.current = setTimeout(() => setToast((prev) => ({ ...prev, visible: false })), durationMs);
   };
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setActiveSearch(val), 400);
+  };
+
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
 
   // Load user's liked/saved community posts on mount
   useEffect(() => {
@@ -288,12 +303,6 @@ export function CommunityClient() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
-    };
-  }, []);
-
   if (!isReady) return null;
 
   return (
@@ -333,13 +342,13 @@ export function CommunityClient() {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search company, location, role, college..."
               className="soft-input w-full rounded-full pl-10 pr-20 py-3 text-xs font-normal transition-all h-[44px]"
             />
             <button
               type="submit"
-              className="absolute right-[3px] top-[3px] bottom-[3px] flex items-center justify-center bg-slate-900 text-white hover:bg-slate-800 rounded-full px-5 text-[9px] font-black uppercase tracking-widest transition-all"
+              className="absolute right-[3px] top-[3px] bottom-[3px] flex items-center justify-center bg-slate-100/50 text-slate-400 hover:bg-slate-900 hover:text-white rounded-full px-5 text-[9px] font-black uppercase tracking-widest transition-all"
             >
               Find
             </button>
