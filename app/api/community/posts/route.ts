@@ -15,15 +15,23 @@ export async function GET(request: Request) {
   // Sanitize search: strip characters that could break Supabase's filter parser (commas, parens, etc.)
   const sanitizedSearch = search.replace(/[(),]/g, " ").trim();
 
-  // Fetch posts
-  let query = supabase.from("community_posts").select("*");
+  // Fetch posts with author profiles joined for broad search
+  // Note: we use profiles!inner() if we want to filter by them, but we want to allow all posts
+  // So we'll use a slightly more complex query approach for the search.
+  let query = supabase.from("community_posts").select(`
+    *,
+    profiles (
+      full_name,
+      display_name,
+      college_name
+    )
+  `);
 
   if (sanitizedSearch) {
-    // Use ilike on title and content separately then combine with .or()
-    // Escape percent signs in the query to be safe
     const escaped = sanitizedSearch.replace(/%/g, "\\%");
+    // Search in title, content, and the joined profile fields
     query = query.or(
-      `title.ilike.%${escaped}%,content.ilike.%${escaped}%`
+      `title.ilike.%${escaped}%,content.ilike.%${escaped}%,profiles.college_name.ilike.%${escaped}%,profiles.full_name.ilike.%${escaped}%`
     );
   }
 
@@ -33,56 +41,28 @@ export async function GET(request: Request) {
     .range(from, to);
 
   if (error) {
-    // If there's a search active and it causes a parse error, return empty results
-    // so users see "no threads found" instead of a raw error message
-    if (search) {
-      return NextResponse.json({ ok: true, posts: [] });
-    }
+    console.error("Community query error:", error);
+    if (search) return NextResponse.json({ ok: true, posts: [] });
     return NextResponse.json({ ok: false, message: "Could not load community." }, { status: 500 });
   }
 
-  // Collect unique non-anonymous user_ids to fetch profiles
-  const userIds = [
-    ...new Set(
-      (posts || [])
-        .filter((p) => !p.is_anonymous)
-        .map((p) => p.user_id)
-    ),
-  ];
-
-  let profileMap: Record<string, { full_name: string | null; college_name: string | null }> = {};
-
-  if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("user_id, full_name, display_name, college_name")
-      .in("user_id", userIds);
-
-    if (profiles) {
-      for (const p of profiles) {
-        profileMap[p.user_id] = {
-          full_name: p.full_name || p.display_name || null,
-          college_name: p.college_name || null,
-        };
-      }
-    }
-  }
-
   // Merge author info, stripping identity for anonymous posts
-  const enriched = (posts || []).map((post) => {
+  const enriched = (posts || []).map((post: any) => {
+    const profile = post.profiles;
     if (post.is_anonymous) {
       return {
         ...post,
         user_id: "anonymous",
         author_name: null,
         author_college: null,
+        profiles: undefined // strip local profile object
       };
     }
-    const profile = profileMap[post.user_id];
     return {
       ...post,
-      author_name: profile?.full_name || null,
+      author_name: profile?.full_name || profile?.display_name || null,
       author_college: profile?.college_name || null,
+      profiles: undefined // strip local profile object
     };
   });
 
