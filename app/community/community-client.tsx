@@ -493,19 +493,36 @@ export function CommunityClient() {
         ) : posts.length === 0 ? (
           <div className="frost flex flex-col items-center justify-center rounded-[34px] border border-dashed border-slate-200 p-10 text-center sm:p-14">
             <Sparkles className="h-12 w-12 text-violet-400 mb-4" />
-            <p className="text-xl font-bold tracking-tight">No threads yet.</p>
-            <p className="text-sm font-medium mt-2 text-slate-500">
-              Be the first to start a discussion!
-            </p>
-            <button
-              onClick={() => {
-                if (!requireLogin("/community")) return;
-                setShowCreate(true);
-              }}
-              className="soft-button mt-6 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-widest text-white hover:opacity-90"
-            >
-              Start a Thread
-            </button>
+            {activeSearch ? (
+              <>
+                <p className="text-xl font-bold tracking-tight">No threads found.</p>
+                <p className="text-sm font-medium mt-2 text-slate-500">
+                  No results for &ldquo;{activeSearch}&rdquo;. Try a different keyword.
+                </p>
+                <button
+                  onClick={() => { setSearchQuery(""); setActiveSearch(""); }}
+                  className="soft-button mt-6 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-widest text-white hover:opacity-90"
+                >
+                  Clear Search
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="text-xl font-bold tracking-tight">No threads yet.</p>
+                <p className="text-sm font-medium mt-2 text-slate-500">
+                  Be the first to start a discussion!
+                </p>
+                <button
+                  onClick={() => {
+                    if (!requireLogin("/community")) return;
+                    setShowCreate(true);
+                  }}
+                  className="soft-button mt-6 rounded-full px-6 py-2 text-[10px] font-black uppercase tracking-widest text-white hover:opacity-90"
+                >
+                  Start a Thread
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <>

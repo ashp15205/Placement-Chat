@@ -12,11 +12,19 @@ export async function GET(request: Request) {
 
   const supabase = await createClient();
 
+  // Sanitize search: strip characters that could break Supabase's filter parser (commas, parens, etc.)
+  const sanitizedSearch = search.replace(/[(),]/g, " ").trim();
+
   // Fetch posts
   let query = supabase.from("community_posts").select("*");
 
-  if (search) {
-    query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`);
+  if (sanitizedSearch) {
+    // Use ilike on title and content separately then combine with .or()
+    // Escape percent signs in the query to be safe
+    const escaped = sanitizedSearch.replace(/%/g, "\\%");
+    query = query.or(
+      `title.ilike.%${escaped}%,content.ilike.%${escaped}%`
+    );
   }
 
   const orderCol = sort === "popular" ? "likes_count" : "created_at";
@@ -25,7 +33,12 @@ export async function GET(request: Request) {
     .range(from, to);
 
   if (error) {
-    return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
+    // If there's a search active and it causes a parse error, return empty results
+    // so users see "no threads found" instead of a raw error message
+    if (search) {
+      return NextResponse.json({ ok: true, posts: [] });
+    }
+    return NextResponse.json({ ok: false, message: "Could not load community." }, { status: 500 });
   }
 
   // Collect unique non-anonymous user_ids to fetch profiles
