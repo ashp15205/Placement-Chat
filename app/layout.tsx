@@ -68,6 +68,7 @@ export default function RootLayout({
     >
       <body className="ambient-grain flex flex-col text-[var(--text)]">
         <AuthProvider>
+          <InteractiveMesh />
           <RootShell>{children}</RootShell>
         </AuthProvider>
       </body>

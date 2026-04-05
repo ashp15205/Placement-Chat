@@ -285,75 +285,97 @@ export default function ExperienceDetailClient() {
                   </div>
 
                   {/* Right Column: Intelligence Narrative */}
-                  <div className="space-y-8 lg:col-span-8 lg:space-y-10">
-                     <section className="">
-                        <div className="flex items-center gap-3">
-                           <div className="h-10 w-10 rounded-2xl bg-black/5 flex items-center justify-center text-black">
+                  <div className="space-y-3 lg:col-span-8">
+                     {/* 1. Overview Box */}
+                     <section className="frost-strong overflow-hidden rounded-[24px] border border-black/5 bg-white/95 p-3.5 shadow-sm transition-all duration-300 hover:border-black/20 hover:shadow-lg md:p-5">
+                        <div className="flex items-center gap-3 mb-2.5">
+                           <div className="h-9 w-9 rounded-xl bg-slate-900/5 flex items-center justify-center text-slate-900 shrink-0">
                               <Building2 className="h-5 w-5" />
                            </div>
-                           <h2 className="text-2xl font-black uppercase tracking-widest text-black">Overview</h2>
+                           <h2 className="text-xl font-black uppercase tracking-tight text-slate-900 md:text-2xl">Overview</h2>
                         </div>
-                        <p className="text-base font-medium leading-[1.8] tracking-tight whitespace-pre-line text-zinc-600 md:text-lg">
+                        <p className="text-base font-semibold leading-relaxed tracking-tight whitespace-pre-line text-slate-600 md:text-lg pl-1">
                            {item.overview || item.rounds_summary}
                         </p>
                      </section>
 
-                     <section className="space-y-2">
-                        <div className="flex items-center gap-4">
-                           <h2 className="text-xl font-black uppercase tracking-widest text-black md:text-2xl">Interview Rounds</h2>
-                           <div className="flex-1 h-[1px] bg-black/5" />
+                     {/* 2. Topics Covered Box */}
+                     <section className="frost-strong overflow-hidden rounded-[24px] border border-black/5 bg-white/95 p-3.5 shadow-sm transition-all duration-300 hover:border-black/20 hover:shadow-lg md:p-5">
+                        <div className="flex items-center gap-3 mb-3">
+                           <div className="h-9 w-9 rounded-xl bg-slate-900/5 flex items-center justify-center text-slate-900 shrink-0">
+                              <Layers className="h-5 w-5" />
+                           </div>
+                           <h2 className="text-xl font-black uppercase tracking-tight text-slate-900 md:text-2xl">Topics Covered</h2>
                         </div>
-
-                        <div className="relative space-y-10 md:space-y-12 mt-2">
-                           {item.rounds_detail?.map((round, idx) => (
-                              <div key={idx} className="relative group">
-                                 {/* Animated Timeline Element */}
-                                 <div className="absolute -left-6 top-0 bottom-0 w-0.5 bg-zinc-100 group-hover:bg-black transition-colors" />
-                                 <div className="absolute -left-[30px] top-1 h-3 w-3 rounded-full border-2 border-white bg-zinc-100 group-hover:bg-black transition-all group-hover:scale-125 shadow-sm" />
-
-                                 <div className="space-y-2 pl-6">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                       <div className="space-y-1">
-                                          <h3 className="text-xl font-black tracking-tighter text-black uppercase">{round.title}</h3>
-                                       </div>
-                                       <div className="flex items-center gap-2 rounded-full bg-zinc-50 border border-zinc-100 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest">
-                                          <Clock className="h-4 w-4 text-black" />
-                                          {round.duration}
-                                       </div>
-                                    </div>
-
-                                    <div className="rounded-[32px] border border-zinc-100 bg-white p-5 shadow-sm transition-all duration-500 group-hover:border-black group-hover:shadow-2xl md:p-5">
-                                       <p className="mb-6 text-sm font-medium leading-relaxed text-zinc-600 md:mb-8 md:text-base">
-                                          {round.summary}
-                                       </p>
-
-                                       {round.questions?.length > 0 && (
-                                          <div className="space-y-4">
-                                             <p className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 border-b border-zinc-100 pb-2">Questions Asked</p>
-                                             <div className="grid gap-3">
-                                                {round.questions.map((q, qidx) => (
-                                                   <div key={qidx} className="group/q flex gap-3 rounded-2xl border border-transparent bg-zinc-50 p-3 transition-all hover:border-black hover:bg-black hover:text-white md:gap-4 md:p-5">
-                                                      <span className="text-[10px] font-black opacity-30">0{qidx + 1}</span>
-                                                      <p className="text-sm font-bold tracking-tight">{q}</p>
-                                                   </div>
-                                                ))}
-                                             </div>
-                                          </div>
-                                       )}
-                                    </div>
-                                 </div>
-                              </div>
+                        <div className="flex flex-wrap gap-1.5 pl-1">
+                           {item.topics?.map(t => (
+                              <span key={t} className="rounded-lg border border-slate-200 bg-white/80 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-900 transition-all hover:border-slate-900 hover:bg-slate-900 hover:text-white cursor-default">
+                                 {t}
+                              </span>
                            ))}
                         </div>
                      </section>
 
-                     <section className="space-y-2">
-                        <h2 className="text-xl font-black uppercase tracking-[0.3em] text-black">Topics</h2>
-                        <div className="flex flex-wrap gap-3">
-                           {item.topics?.map(t => (
-                              <span key={t} className="rounded-2xl border border-zinc-200 bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black transition-all hover:border-black hover:shadow-xl md:px-6 md:py-3">
-                                 {t}
-                              </span>
+                     {/* 3. Interview Rounds Box */}
+                     <section className="frost-strong overflow-hidden rounded-[24px] border border-black/5 bg-white/95 p-3.5 shadow-sm transition-all duration-300 hover:border-black/20 hover:shadow-lg md:p-5">
+                        <div className="flex items-center gap-3 mb-4">
+                           <div className="h-9 w-9 rounded-xl bg-slate-900/5 flex items-center justify-center text-slate-900 shrink-0">
+                              <Zap className="h-5 w-5" />
+                           </div>
+                           <h2 className="text-xl font-black uppercase tracking-tight text-slate-900 md:text-2xl">Interview Rounds</h2>
+                        </div>
+
+                        <div className="relative space-y-4">
+                           {item.rounds_detail?.map((round, idx) => (
+                              <div key={idx} className="relative group/round">
+                                 {/* Perfectly Centered Timeline Path */}
+                                 <div className="absolute left-0 top-0 bottom-0 flex w-[1px] justify-center ml-[5px]">
+                                    <div className="w-full bg-slate-100 group-hover/round:bg-black/20 transition-all" />
+                                 </div>
+                                 
+                                 <div className="relative pl-8 pb-3">
+                                    {/* Precisely Aligned Timeline Node */}
+                                    <div className="absolute left-0 top-1.5 h-2.5 w-2.5 translate-x-0 rounded-full border-2 border-white bg-slate-300 group-hover/round:bg-black group-hover/round:scale-125 transition-all shadow-sm z-10" />
+
+                                    <div className="space-y-2.5">
+                                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                          <div className="flex items-center gap-3">
+                                             <span className="text-[10px] font-black opacity-20 group-hover/round:opacity-100 transition-opacity">R{idx + 1}</span>
+                                             <h3 className="text-xl font-black tracking-tighter text-slate-900 uppercase leading-none">{round.title}</h3>
+                                          </div>
+                                          <div className="flex w-fit items-center gap-1.5 rounded-full bg-slate-900/5 px-3 py-1 text-[8px] font-black uppercase tracking-widest text-slate-500">
+                                             <Clock className="h-3 w-3" />
+                                             {round.duration}
+                                          </div>
+                                       </div>
+
+                                       <div className="rounded-[24px] border border-slate-100 bg-slate-50/20 p-4 transition-all duration-500 group-hover/round:border-black/10 group-hover/round:bg-white group-hover/round:shadow-sm">
+                                          <p className="text-base font-medium leading-relaxed text-slate-600 lg:text-lg">
+                                             {round.summary}
+                                          </p>
+
+                                          {round.questions?.length > 0 && (
+                                             <div className="mt-5 space-y-3">
+                                                <div className="flex items-center gap-3">
+                                                   <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Questions Asked</p>
+                                                   <div className="flex-1 h-[1px] bg-slate-100" />
+                                                </div>
+                                                <div className="grid gap-2">
+                                                   {round.questions.map((q, qidx) => (
+                                                      <div key={qidx} className="group/q flex gap-4 rounded-xl border border-transparent bg-white/60 p-3 transition-all hover:border-black/5 hover:bg-slate-50">
+                                                         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-black/5 text-[9px] font-black group-hover/q:bg-black group-hover/q:text-white transition-all">
+                                                            {qidx + 1}
+                                                         </div>
+                                                         <p className="text-sm font-bold tracking-tight leading-snug text-slate-800 lg:text-base">{q}</p>
+                                                      </div>
+                                                   ))}
+                                                </div>
+                                             </div>
+                                          )}
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                            ))}
                         </div>
                      </section>

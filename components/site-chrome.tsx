@@ -291,9 +291,6 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6">
         <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
 
-        {/* Blending Separator Line */}
-        <div className="mb-3 h-px w-full bg-gradient-to-r from-transparent via-slate-200/60 to-transparent" />
-
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           {/* Left: Brand */}
           <div className="flex w-full items-center justify-center md:w-1/3 md:justify-start">
