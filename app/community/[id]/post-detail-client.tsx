@@ -517,12 +517,7 @@ export function PostDetailClient() {
               <><User className="h-3 w-3 text-slate-900" /><span>{post.author_name || "Student"}</span></>
             )}
           </span>
-          {!post.is_anonymous && post.author_college && (
-            <span className="flex items-center gap-1.5">
-              <GraduationCap className="h-3 w-3 text-slate-900" />
-              <span>{post.author_college}</span>
-            </span>
-          )}
+
           <span className="flex items-center gap-1.5 ml-auto">
             <Clock className="h-3 w-3" />
             {getRelativeTime(post.created_at)}

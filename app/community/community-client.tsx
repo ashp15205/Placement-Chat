@@ -562,12 +562,7 @@ export function CommunityClient() {
                       </>
                     )}
                   </span>
-                  {!post.is_anonymous && post.author_college && (
-                    <span className="flex items-center gap-1.5 shrink-0">
-                      <GraduationCap className="h-2.5 w-2.5 text-slate-900" />
-                      <span>{post.author_college}</span>
-                    </span>
-                  )}
+
                   <span className="flex items-center gap-1.5 shrink-0 ml-auto">
                     <Clock className="h-2.5 w-2.5" />
                     <span>{getRelativeTime(post.created_at)}</span>

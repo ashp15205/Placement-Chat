@@ -233,10 +233,10 @@ export default function ExperienceDetailClient() {
                                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Profile</p>
                                  <div className="flex items-center justify-center md:justify-start gap-4 pt-2">
                                     <div className="h-14 w-14 rounded-2xl bg-black text-white flex items-center justify-center font-black text-2xl tracking-tighter shadow-lg">
-                                       {item.author_name?.[0] || 'S'}
+                                       {item.anonymous ? "?" : (item.author_name?.[0] || 'S')}
                                     </div>
                                     <div className="space-y-0.5 text-left">
-                                       <h3 className="text-lg font-black text-black tracking-tight">{item.author_name || "Anonymous"}</h3>
+                                       <h3 className="text-lg font-black text-black tracking-tight">{item.anonymous ? "Anonymous Student" : (item.author_name || "Student")}</h3>
                                        {item.linkedin_url && !item.anonymous && (
                                           <a
                                              href={item.linkedin_url}
@@ -252,10 +252,6 @@ export default function ExperienceDetailClient() {
                               </div>
 
                               <div className="space-y-4 pt-4 border-t border-zinc-100">
-                                 <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
-                                    <span className="flex items-center gap-2 text-muted-foreground"><GraduationCap className="h-4 w-4 text-black" /> College</span>
-                                    <span className="text-black text-right">{item.college || "Nexus"}</span>
-                                 </div>
                                  <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest">
                                     <span className="flex items-center gap-2 text-muted-foreground"><Layers className="h-4 w-4 text-black" /> Branch</span>
                                     <span className="text-black text-right">{item.branch}</span>
